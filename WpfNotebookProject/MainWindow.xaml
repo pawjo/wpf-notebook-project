@@ -19,9 +19,18 @@
         <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Background="Gray" Orientation="Horizontal">
             <Button Content="Menu"/>
         </StackPanel>
-        <StackPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2">
-            <Image Source=""></Image>
-        </StackPanel>
+        <ToolBar Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+            <Image Source="/Resources/boldTextIcon.png" Height="16" Width="16" Margin="6,0"/>
+            <Image Source="/Resources/italicTextIcon.png" Height="16" Width="16" Margin="6,0"/>
+            <Image Source="/Resources/underlinedTextIcon.png" Height="16" Width="16" Margin="6,0"/>
+            <ComboBox Padding="10,0" BorderBrush="Black">
+                <ComboBoxItem Content="Arial" IsSelected="True"/>
+            </ComboBox>
+            <ComboBox Padding="8,0" BorderBrush="Black">
+                <ComboBoxItem Content="11" IsSelected="True"/>
+            </ComboBox>
+
+        </ToolBar>
         <ListBox Grid.Row="2" Grid.Column="0">
             <ListBoxItem Content="Notatka 1"/>
             <ListBoxItem Content="Notatka 2"/>

@@ -6,4 +6,22 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Resources\boldTextIcon.png" />
+    <None Remove="Resources\italicTextIcon.png" />
+    <None Remove="Resources\underlinedTextIcon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\boldTextIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\italicTextIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\underlinedTextIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
