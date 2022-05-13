@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfNotebookProject"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Notes" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -16,28 +16,105 @@
             <ColumnDefinition Width="200"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Background="Gray" Orientation="Horizontal">
-            <Button Content="Menu"/>
-        </StackPanel>
-        <ToolBar Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-            <Image Source="/Resources/boldTextIcon.png" Height="16" Width="16" Margin="6,0"/>
-            <Image Source="/Resources/italicTextIcon.png" Height="16" Width="16" Margin="6,0"/>
-            <Image Source="/Resources/underlinedTextIcon.png" Height="16" Width="16" Margin="6,0"/>
+        <Menu Grid.Row="0" Grid.Column="0" Padding="4" Background="Azure">
+            <MenuItem Header="Menu">
+                <MenuItem Header="Nowy notes"/>
+                <MenuItem Header="Otwórz notes" Click="OpenFileMenuItem_Click"/>
+                <MenuItem Header="Zapisz notes"/>
+                <MenuItem Header="Zapisz notes jako"/>
+                <MenuItem Header="Opcje"/>
+            </MenuItem>
+        </Menu>
+        <Grid Grid.Row="0" Grid.Column="1" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="0" Padding="4" Text="Wyszukaj..."></TextBox>
+            <Button Grid.Column="1" Content="Wyszukaj"></Button>
+        </Grid>
+        <ToolBar Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Background="Azure">
+            <Button>
+                <Image Source="/Resources/boldTextIcon.png" Height="12" Width="12" Margin="6,0"/>
+            </Button>
+            <Button>
+                <Image Source="/Resources/italicTextIcon.png" Height="12" Width="12" Margin="6,0"/>
+            </Button>
+            <Button>
+                <Image Source="/Resources/underlinedTextIcon.png" Height="12" Width="12" Margin="6,0"/>
+            </Button>
             <ComboBox Padding="10,0" BorderBrush="Black">
                 <ComboBoxItem Content="Arial" IsSelected="True"/>
+                <ComboBoxItem Content="Times New Roman" />
+                <ComboBoxItem Content="Comic Sans" />
             </ComboBox>
             <ComboBox Padding="8,0" BorderBrush="Black">
+                <ComboBoxItem Content="9"/>
+                <ComboBoxItem Content="10"/>
                 <ComboBoxItem Content="11" IsSelected="True"/>
+                <ComboBoxItem Content="12"/>
+                <ComboBoxItem Content="14"/>
+                <ComboBoxItem Content="16"/>
+                <ComboBoxItem Content="18"/>
             </ComboBox>
-
+            <Separator/>
+            <Button>
+                <Image Source="/add_image-512.webp" Height="12" Width="12" Margin="6,0"/>
+            </Button>
         </ToolBar>
-        <ListBox Grid.Row="2" Grid.Column="0">
-            <ListBoxItem Content="Notatka 1"/>
-            <ListBoxItem Content="Notatka 2"/>
+        <ListBox Grid.Row="2" Grid.Column="0" Background="AliceBlue">
+            <!--<ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Button>
+                        <StackPanel>
+                            <StackPanel.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Zmień nazwę"/>
+                                    <MenuItem Header="Usuń"/>
+                                </ContextMenu>
+                            </StackPanel.ContextMenu>
+                        </StackPanel>
+                    </Button>
+                </DataTemplate>
+            </ListBox.ItemTemplate>-->
+            <ListBoxItem Content="Notatka 1">
+                <ListBoxItem.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Zmień nazwę"/>
+                        <MenuItem Header="Usuń"/>
+                    </ContextMenu>
+                </ListBoxItem.ContextMenu>
+            </ListBoxItem>
+            <ListBoxItem Content="Notatka 2">
+                <ListBoxItem.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Zmień nazwę"/>
+                        <MenuItem Header="Usuń"/>
+                    </ContextMenu>
+                </ListBoxItem.ContextMenu>
+            </ListBoxItem>
         </ListBox>
         <TabControl Grid.Row="2" Grid.Column="1">
-            <TabItem Header="Sekcja 1"></TabItem>
-            <TabItem Header="Sekcja 2"></TabItem>
+            <TabItem Header="Sekcja 1">
+                <TabItem.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Zmień nazwę"/>
+                        <MenuItem Header="Usuń"/>
+                    </ContextMenu>
+                </TabItem.ContextMenu>
+                <TextBox TextWrapping="Wrap"  AcceptsReturn="True" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" Text="What is Lorem Ipsum?
+                             Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."/>
+            </TabItem>
+            <TabItem Header="Sekcja 2">
+                <TabItem.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Zmień nazwę"/>
+                        <MenuItem Header="Usuń"/>
+                    </ContextMenu>
+                </TabItem.ContextMenu>
+                <TextBox TextWrapping="Wrap"  AcceptsReturn="True" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" Text="Przykładowa notatka 2"/>
+            </TabItem>
+            <TabItem Header="+"></TabItem>
         </TabControl>
     </Grid>
 </Window>
