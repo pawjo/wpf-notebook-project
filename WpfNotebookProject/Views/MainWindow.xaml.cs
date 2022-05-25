@@ -30,7 +30,7 @@ namespace WpfNotebookProject
             _viewModel = new MainViewModel();
             DataContext = _viewModel;
         }
-
+        // zmiana
         private void OpenFileMenuItem_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new OpenFileDialog();
