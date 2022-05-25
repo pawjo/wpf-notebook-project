@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfNotebookProject.ViewModels;
 
 namespace WpfNotebookProject
 {
@@ -21,9 +22,13 @@ namespace WpfNotebookProject
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly ViewModelBase _viewModel;
+
         public MainWindow()
         {
             InitializeComponent();
+            _viewModel = new MainViewModel();
+            DataContext = _viewModel;
         }
 
         private void OpenFileMenuItem_Click(object sender, RoutedEventArgs e)
