@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace WpfNotebookProject.ViewModels
 {
@@ -10,16 +11,22 @@ namespace WpfNotebookProject.ViewModels
 
         protected virtual bool ThrowOnInvalidPropertyName { get; set; }
 
-        protected virtual void OnPropertyChanged(string propertyName)
+        //protected virtual void OnPropertyChanged(string propertyName)
+        //{
+        //    this.VerifyPropertyName(propertyName);
+        //    PropertyChangedEventHandler handler = this.PropertyChanged;
+        //    if (handler != null)
+        //    {
+        //        var e = new PropertyChangedEventArgs(propertyName);
+        //        handler(this, e);
+        //    }
+        //}
+
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
-            this.VerifyPropertyName(propertyName);
-            PropertyChangedEventHandler handler = this.PropertyChanged;
-            if (handler != null)
-            {
-                var e = new PropertyChangedEventArgs(propertyName);
-                handler(this, e);
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
+
         [Conditional("DEBUG")]
         [DebuggerStepThrough]
         public void VerifyPropertyName(string propertyName)

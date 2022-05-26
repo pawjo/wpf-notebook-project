@@ -25,13 +25,18 @@ namespace WpfNotebookProject
                     Title = "Sekcja 1",
                     Notes = new List<Note>
                     {
-                        new Note{Title="Testowa notatka 1"},
-                        new Note{Title="Test2"}
+                        new Note{Title="Testowa notatka 1", Text= "Tekst testowej notatki 1"},
+                        new Note{Title="Test2", Text="Tekst 2"}
                     }
                 },
                 new Section
                 {
-                    Title="Sekcja 2"
+                    Title="Sekcja 2",
+                    Notes = new List<Note>
+                    {
+                        new Note{Title="Testowa notatka w sekcji 2", Text="aaaaaaa"},
+                        new Note{Title="Test2", Text="Tekst 2"}
+                    }
                 }
             };
 
