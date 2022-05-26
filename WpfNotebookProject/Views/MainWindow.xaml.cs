@@ -1,18 +1,7 @@
 ﻿using Microsoft.Win32;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using WpfNotebookProject.Models;
 using WpfNotebookProject.ViewModels;
 
 namespace WpfNotebookProject
@@ -22,12 +11,30 @@ namespace WpfNotebookProject
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly ViewModelBase _viewModel;
+        private readonly MainViewModel _viewModel;
 
         public MainWindow()
         {
             InitializeComponent();
             _viewModel = new MainViewModel();
+            _viewModel.Notebook = new Notebook();
+            _viewModel.Notebook.Sections = new List<Section>
+            {
+                new Section
+                {
+                    Title = "Sekcja 1",
+                    Notes = new List<Note>
+                    {
+                        new Note{Title="Testowa notatka 1"},
+                        new Note{Title="Test2"}
+                    }
+                },
+                new Section
+                {
+                    Title="Sekcja 2"
+                }
+            };
+
             DataContext = _viewModel;
         }
 
