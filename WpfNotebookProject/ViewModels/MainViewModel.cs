@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows.Controls;
 using WpfNotebookProject.Models;
 
 namespace WpfNotebookProject.ViewModels
@@ -21,6 +22,8 @@ namespace WpfNotebookProject.ViewModels
                 return _openSections;
             }
         }
+        
+
 
         private Section _actualSection;
 
