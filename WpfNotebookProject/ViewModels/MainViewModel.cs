@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows.Controls;
+using System.Windows.Markup;
 using WpfNotebookProject.Models;
 
 namespace WpfNotebookProject.ViewModels
@@ -21,6 +23,8 @@ namespace WpfNotebookProject.ViewModels
                 return _openSections;
             }
         }
+        
+
 
         private Section _actualSection;
 
@@ -50,7 +54,7 @@ namespace WpfNotebookProject.ViewModels
 
         public string NoteText
         {
-            get => OpenNote != null ? OpenNote.Text : string.Empty;
+            get => OpenNote != null ? OpenNote.Text : GetNewNoteText();
             set
             {
                 if (OpenNote != null)
@@ -93,31 +97,41 @@ namespace WpfNotebookProject.ViewModels
             }
         }
 
+        private System.Windows.Documents.FlowDocument _doc;
+
+        public System.Windows.Documents.FlowDocument Doc { 
+            get => _doc ?? (_doc = new System.Windows.Documents.FlowDocument());
+            set {
+                _doc = value;
+            }
+        }
+
 
         public MainViewModel() : base()
         {
             Notebook = new Notebook();
-            Notebook.Sections = new List<Section>
-            {
-                new Section
-                {
-                    Title = "Sekcja 1",
-                    Notes = new List<Note>
-                    {
-                        new Note{Title="Testowa notatka 1", Text= "Tekst testowej notatki 1"},
-                        new Note{Title="Test2", Text="Tekst 2"}
-                    }
-                },
-                new Section
-                {
-                    Title="Sekcja 2",
-                    Notes = new List<Note>
-                    {
-                        new Note{Title="Testowa notatka w sekcji 2", Text="aaaaaaa"},
-                        new Note{Title="Test2", Text="Tekst 2"}
-                    }
-                }
-            };
+            Notebook.Sections = new List<Section>();
+            //Notebook.Sections = new List<Section>
+            //{
+            //    new Section
+            //    {
+            //        Title = "Sekcja 1",
+            //        Notes = new List<Note>
+            //        {
+            //            new Note{Title="Testowa notatka 1", Text= "Tekst testowej notatki 1"},
+            //            new Note{Title="Test2", Text="Tekst 2"}
+            //        }
+            //    },
+            //    new Section
+            //    {
+            //        Title="Sekcja 2",
+            //        Notes = new List<Note>
+            //        {
+            //            new Note{Title="Testowa notatka w sekcji 2", Text="aaaaaaa"},
+            //            new Note{Title="Test2", Text="Tekst 2"}
+            //        }
+            //    }
+            //};
             LoadSections();
             //ChangeSection(Notebook.Sections[0]);
         }
@@ -154,12 +168,14 @@ namespace WpfNotebookProject.ViewModels
                 var newNote = new Note
                 {
                     Title = "Nowa notatka",
-                    Text = "Tekst nowej notatki"
+                    Text = GetNewNoteText()
                 };
                 section.Notes.Add(newNote);
                 OnPropertyChanged("Notes");
                 ChangeOpenNote(newNote);
             }
         }
+
+        private string GetNewNoteText() => XamlWriter.Save(new System.Windows.Documents.FlowDocument());
     }
 }

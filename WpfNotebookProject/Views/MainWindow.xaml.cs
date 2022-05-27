@@ -1,6 +1,10 @@
 ﻿using Microsoft.Win32;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Media;
 using WpfNotebookProject.Models;
 using WpfNotebookProject.ViewModels;
 using static WpfNotebookProject.Themes.ThemesController;
@@ -14,7 +18,19 @@ namespace WpfNotebookProject
     {
         private readonly MainViewModel _viewModel;
 
-        public MainWindow()
+		public RichTextBox tbEditor
+		{
+			get
+			{
+				ContentPresenter myContentPresenter = FindVisualChild<ContentPresenter>(SectionsTabControl);
+
+				// Finding textBlock from the DataTemplate that is set on that ContentPresenter
+				DataTemplate myDataTemplate = myContentPresenter.ContentTemplate;
+				return (RichTextBox)myDataTemplate.FindName("tbEditor", myContentPresenter);
+			}
+		}
+
+		public MainWindow()
         {
             InitializeComponent();
             _viewModel = new MainViewModel();
@@ -121,5 +137,33 @@ namespace WpfNotebookProject
 		//    WindowClosedCallback?.Invoke(this);
 		//}
 
-	}
+
+
+		private childItem FindVisualChild<childItem>(DependencyObject obj)
+			where childItem : DependencyObject
+		{
+			for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
+			{
+				DependencyObject child = VisualTreeHelper.GetChild(obj, i);
+				if (child != null && child is childItem)
+				{
+					return (childItem)child;
+				}
+				else
+				{
+					childItem childOfChild = FindVisualChild<childItem>(child);
+					if (childOfChild != null)
+						return childOfChild;
+				}
+			}
+			return null;
+		}
+
+        private void testbtn(object sender, RoutedEventArgs e)
+        {
+			var blocks = tbEditor.Document.Blocks;
+			var firstBlock = blocks.FirstBlock;
+			;
+        }
+    }
 }

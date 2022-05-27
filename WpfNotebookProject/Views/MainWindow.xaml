@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:u="clr-namespace:WpfNotebookProject.Utils"
         mc:Ignorable="d"
         Title="Notes" Height="450" Width="800">
     <Window.Resources>
@@ -82,28 +83,28 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <TextBox Grid.Column="0" Padding="4" Text="Wyszukaj..."></TextBox>
-            <Button Grid.Column="1" Content="Wyszukaj"></Button>
+            <Button Grid.Column="1" Content="Wyszukaj" Click="testbtn"></Button>
         </Grid>
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
+
+
+
         <ToolBar Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Background="Azure">
             <ToggleButton Command="EditingCommands.ToggleBold" Name="btnBold">
                 <Image Source="/Resources/boldTextIcon.png" Height="12" Width="12" Margin="6,0"/>
             </ToggleButton>
-            
+
             <ToggleButton Command="EditingCommands.ToggleItalic" Name="btnItalic">
                 <Image Source="/Resources/italicTextIcon.png" Height="12" Width="12" Margin="6,0"/>
             </ToggleButton>
-            
+
             <ToggleButton Command="EditingCommands.ToggleUnderline" Name="btnUnderline">
-                    <Image Source="/Resources/underlinedTextIcon.png" Height="12" Width="12" Margin="6,0"/>
+                <Image Source="/Resources/underlinedTextIcon.png" Height="12" Width="12" Margin="6,0"/>
             </ToggleButton>
             <ComboBox Name="cmbFontFamily" SelectionChanged="cmbFontFamily_SelectionChanged" Padding="10,0" BorderBrush="Black" />
             <!--<ComboBoxItem Content="Arial" IsSelected="True"/>
@@ -111,7 +112,7 @@
                 <ComboBoxItem Content="Comic Sans" />-->
 
             <ComboBox Name="cmbFontSize" Padding="8,0" BorderBrush="Black" IsEditable="True" TextBoxBase.TextChanged="cmbFontSize_TextChanged" />
-           
+
 
             <Separator/>
             <Button>
@@ -165,7 +166,15 @@
                         </ListBox>
                         <Button Grid.Row="1" Grid.Column="0" Content="Dodaj notatkę" Command="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.AddNewNoteCommand }"
                                 CommandParameter="{Binding ElementName=SectionsTabControl, Path=SelectedItem}"/>
-                        <TextBox Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Text="{Binding ElementName=root, Path=DataContext.NoteText}"/>
+                        <!--<TextBox Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Text="{Binding ElementName=root, Path=DataContext.NoteText}"/>-->
+                        <RichTextBox Name="tbEditor" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" SelectionChanged="tbEditor_SelectionChanged"   AcceptsReturn="True" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible"
+                                     u:RichTextBoxHelper.DocumentXaml="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.NoteText, Mode=TwoWay}">
+                            <!--<FlowDocument>
+                                <Paragraph>
+                                    <Run Text="{Binding ElementName=root, Path=DataContext.NoteText, Mode=TwoWay}"/>
+                                </Paragraph>
+                            </FlowDocument>-->
+                        </RichTextBox>
                     </Grid>
                 </DataTemplate>
             </TabControl.ContentTemplate>
