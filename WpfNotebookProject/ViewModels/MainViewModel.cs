@@ -22,9 +22,43 @@ namespace WpfNotebookProject.ViewModels
             }
         }
 
+        private Section _actualSection;
+
+        public Section ActualSection
+        {
+            get => _actualSection;
+            private set
+            {
+                _actualSection = value;
+                OnPropertyChanged(nameof(ActualSection));
+            }
+        }
+
+        private ObservableCollection<Note> _openNotes;
+
+        public ObservableCollection<Note> OpenNotes
+        {
+            get => _openNotes ?? (_openNotes = new ObservableCollection<Note>());
+            private set
+            {
+                OpenNotes = value;
+                OnPropertyChanged(nameof(OpenSections));
+            }
+        }
+
         public Note OpenNote { get; set; }
 
-        public string NoteText { get => OpenNote != null ? OpenNote.Text : string.Empty; }
+        public string NoteText
+        {
+            get => OpenNote != null ? OpenNote.Text : string.Empty;
+            set
+            {
+                if (OpenNote != null)
+                {
+                    OpenNote.Text = value;
+                }
+            }
+        }
 
         private RelayCommand _changeOpenNoteCommand;
 
@@ -48,13 +82,15 @@ namespace WpfNotebookProject.ViewModels
             }
         }
 
-        private void AddNewTab()
+        private RelayCommand _addNewNoteCommand;
+
+        public RelayCommand AddNewNoteCommand
         {
-            OpenSections.Add(new Section
+            get
             {
-                Title = "Nowa sekcja",
-                Notes = new List<Note>()
-            });
+                return _addNewNoteCommand ??
+                    (_addNewNoteCommand = new RelayCommand(x => AddNewNote(x)));
+            }
         }
 
 
@@ -83,8 +119,8 @@ namespace WpfNotebookProject.ViewModels
                 }
             };
             LoadSections();
+            //ChangeSection(Notebook.Sections[0]);
         }
-
 
         private void ChangeOpenNote(object param)
         {
@@ -98,6 +134,31 @@ namespace WpfNotebookProject.ViewModels
             if (Notebook != null)
             {
                 _openSections = new ObservableCollection<Section>(Notebook.Sections);
+            }
+        }
+
+        private void AddNewTab()
+        {
+            OpenSections.Add(new Section
+            {
+                Title = "Nowa sekcja",
+                Notes = new List<Note>()
+            });
+        }
+
+        private void AddNewNote(object param)
+        {
+            var section = param as Section;
+            if (section != null)
+            {
+                var newNote = new Note
+                {
+                    Title = "Nowa notatka",
+                    Text = "Tekst nowej notatki"
+                };
+                section.Notes.Add(newNote);
+                OnPropertyChanged("Notes");
+                ChangeOpenNote(newNote);
             }
         }
     }

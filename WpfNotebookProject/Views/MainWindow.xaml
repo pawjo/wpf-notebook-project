@@ -92,7 +92,7 @@
             </Button>
         </ToolBar>
 
-        <TabControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding OpenSections}" Template="{StaticResource TabControlTemplate}">
+        <TabControl x:Name="SectionsTabControl" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding OpenSections}" Template="{StaticResource TabControlTemplate}">
             <TabControl.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Title}">
@@ -108,6 +108,10 @@
             <TabControl.ContentTemplate>
                 <DataTemplate>
                     <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="200"/>
                             <ColumnDefinition/>
@@ -132,7 +136,9 @@
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
-                        <TextBlock Grid.Column="1" Text="{Binding ElementName=root, Path=DataContext.NoteText}"/>
+                        <Button Grid.Row="1" Grid.Column="0" Content="Dodaj notatkę" Command="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.AddNewNoteCommand }"
+                                CommandParameter="{Binding ElementName=SectionsTabControl, Path=SelectedItem}"/>
+                        <TextBox Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Text="{Binding ElementName=root, Path=DataContext.NoteText}"/>
                     </Grid>
                 </DataTemplate>
             </TabControl.ContentTemplate>
