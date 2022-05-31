@@ -12,6 +12,7 @@
     <None Remove="Resources\closeFile.png" />
     <None Remove="Resources\closePane.png" />
     <None Remove="Resources\italicTextIcon.png" />
+    <None Remove="Resources\new-file-icon.png" />
     <None Remove="Resources\newFile.png" />
     <None Remove="Resources\openFile.png" />
     <None Remove="Resources\printIcon.png" />
@@ -45,6 +46,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\closePane.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\new-file-icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\newFile.png">
