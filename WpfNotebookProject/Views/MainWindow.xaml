@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:u="clr-namespace:WpfNotebookProject.Utils"
         mc:Ignorable="d"
         Title="Notes" Height="450" Width="800">
     <Window.Resources>
@@ -25,7 +26,7 @@
                     <TabPanel Margin="2,2,2,0" x:Name="HeaderPanel" IsItemsHost="true" KeyboardNavigation.TabIndex="1"/>
                     <Button Grid.Column="1" Padding="5,0" FontWeight="Bold" FontSize="14" Command="{Binding DataContext.NewTabCommand, RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}}">+</Button>
                 </Grid>
-                <Border x:Name="ContentPanel" Grid.Column="0" Grid.Row="1" BorderBrush="#D0CEBF" BorderThickness="0,0,1,1" KeyboardNavigation.DirectionalNavigation="Contained" KeyboardNavigation.TabIndex="2" KeyboardNavigation.TabNavigation="Local">
+                <Border x:Name="ContentPanel" Grid.Column="0" Grid.Row="3" BorderBrush="#D0CEBF" BorderThickness="0,0,1,1" KeyboardNavigation.DirectionalNavigation="Contained" KeyboardNavigation.TabIndex="2" KeyboardNavigation.TabNavigation="Local">
                     <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
                         <Border Background="{TemplateBinding Background}">
                             <ContentPresenter ContentSource="SelectedContent"/>
@@ -37,6 +38,7 @@
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition/>
@@ -53,6 +55,28 @@
                 <MenuItem Header="Zapisz notes jako"/>
                 <MenuItem Header="Opcje"/>
             </MenuItem>
+            <!--<MenuItem Header="Theme">
+                <MenuItem Header="Light" Template="{DynamicResource SingleDropDownMenuItem}" Click="ChangeTheme" Uid="0">
+                    <MenuItem.Icon>
+                        <Rectangle Stroke="#FF848484" Fill="#FFE8E8E8" StrokeThickness="2" StrokeLineJoin="Round" BitmapEffect="{StaticResource NormalShadow}"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Colourful Light" Template="{DynamicResource SingleDropDownMenuItem}" Click="ChangeTheme" Uid="1">
+                    <MenuItem.Icon>
+                        <Rectangle Stroke="#FF2C7FF5" Fill="#FFE8E8E8" StrokeThickness="2" StrokeLineJoin="Round" BitmapEffect="{StaticResource NormalShadow}"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Dark" Template="{DynamicResource SingleDropDownMenuItem}" Click="ChangeTheme" Uid="2">
+                    <MenuItem.Icon>
+                        <Rectangle Stroke="#FF404040" Fill="#FF1B1B1B" StrokeThickness="2" StrokeLineJoin="Round" BitmapEffect="{StaticResource NormalShadow}"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Colourful Dark" Template="{DynamicResource SingleDropDownMenuItem}" Click="ChangeTheme" Uid="3">
+                    <MenuItem.Icon>
+                        <Rectangle Stroke="#FF2C7FF5" Fill="#FF1B1B1B" StrokeThickness="2" StrokeLineJoin="Round" BitmapEffect="{StaticResource NormalShadow}"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>-->
         </Menu>
         <Grid Grid.Row="0" Grid.Column="1" >
             <Grid.ColumnDefinitions>
@@ -60,39 +84,131 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <TextBox Grid.Column="0" Padding="4" Text="Wyszukaj..."></TextBox>
-            <Button Grid.Column="1" Content="Wyszukaj"></Button>
+            <Button Grid.Column="1" Content="Wyszukaj" Click="testbtn"></Button>
         </Grid>
-        <ToolBar Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Background="Azure">
-            <Button>
+
+        <Grid Grid.Row="1" Grid.ColumnSpan="2">
+            <DockPanel Margin="5,18,5,5" Background="{DynamicResource BackgroundColour}">
+                <Button  ToolTip="Nowy notes" 
+                                BorderBrush="Transparent" Background="Transparent" VerticalAlignment="Center"
+                                Focusable="False" Width="28" Height="28" Margin="0 0 2 0">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Duration="0:0:0.1" To="32" Storyboard.TargetProperty="Width" />
+                                    <DoubleAnimation Duration="0:0:0.1" To="32" Storyboard.TargetProperty="Height" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Duration="0:0:0.1" To="28" Storyboard.TargetProperty="Width" />
+                                    <DoubleAnimation Duration="0:0:0.1" To="28" Storyboard.TargetProperty="Height" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Button.Triggers>
+                    <Image Margin="1" Source="/Resources/newFile.png"/>
+                </Button>
+
+                <Button Command="{Binding OpenCommand, Mode=OneTime}" ToolTip="Otwórz notes"
+                                BorderBrush="Transparent" Background="Transparent" 
+                                Focusable="False" Width="28" Margin="0 0 2 0">
+                    <Image Margin="1" Source="/Resources/openFile.png"/>
+                </Button>
+
+                <StackPanel IsEnabled="{Binding NotepadAvaliable, UpdateSourceTrigger=PropertyChanged}" Orientation="Horizontal">
+                    <Button Command="{Binding SaveCommand, Mode=OneTime}" ToolTip="Zapisz notes" 
+                                    BorderBrush="Transparent"  VerticalAlignment="Center"
+                                    Background="Transparent" Focusable="False"
+                                    Width="28" Height="28" Margin="0 0 2 0">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="MouseEnter">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0:0:0.1" To="32" Storyboard.TargetProperty="Width" />
+                                        <DoubleAnimation Duration="0:0:0.1" To="32" Storyboard.TargetProperty="Height" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="MouseLeave">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0:0:0.1" To="28" Storyboard.TargetProperty="Width" />
+                                        <DoubleAnimation Duration="0:0:0.1" To="28" Storyboard.TargetProperty="Height" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                        <Image Margin="1" Source="/Resources/saveFile.png"/>
+                    </Button>
+
+                    <Button Command="{Binding SaveAsCommand, Mode=OneTime}" ToolTip="Zapisz notes jako..." 
+                                    BorderBrush="Transparent" Background="Transparent" Width="28"
+                                    Focusable="False" Margin="0 0 2 0">
+                        <Image Margin="1" Source="/Resources/saveFileAs.png"/>
+                    </Button>
+
+                    <Button Command="{Binding SaveAllCommand, Mode=OneTime}" ToolTip="Zapisz każdy obecnie otwarty"
+                                    BorderBrush="Transparent" Background="Transparent" 
+                                    Focusable="False" Width="28" Margin="0 0 2 0">
+                        <Image Margin="1" Source="/Resources/saveAll.png"/>
+                    </Button>
+                    <Button Command="{Binding CloseSelectedNotepadCommand, Mode=OneTime}" ToolTip="Zamknij obecny notes i usuń go" 
+                                    BorderBrush="Transparent" Background="Transparent" 
+                                    Focusable="False" Width="28" Margin="0 0 2 0">
+                        <Image Margin="1" Source="/Resources/closeFile.png"/>
+                    </Button>
+                    <Button Command="{Binding CloseAllNotepadsCommand, Mode=OneTime}" ToolTip="Zamknij wszystkie otwarte notesy i usuń je" 
+                                    BorderBrush="Transparent" Background="Transparent" 
+                                    Focusable="False" Width="28" Margin="0 0 2 0">
+                        <Image Margin="1" Source="/Resources/closeAllFiles.png"/>
+                    </Button>
+                    <Button Command="{Binding PrintFileCommand, Mode=OneTime}" IsEnabled="True" 
+                                    BorderBrush="Transparent" Background="Transparent"
+                                    ToolTip="Drukuj tekst" Width="32" Margin="0">
+                        <Image Margin="1" Source="/Resources/printIcon.png"/>
+                    </Button>
+                </StackPanel>
+
+            </DockPanel>
+        </Grid>
+
+
+
+
+
+
+
+        <ToolBar Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Background="Azure">
+            <ToggleButton Command="EditingCommands.ToggleBold" Name="btnBold">
                 <Image Source="/Resources/boldTextIcon.png" Height="12" Width="12" Margin="6,0"/>
-            </Button>
-            <Button>
+            </ToggleButton>
+
+            <ToggleButton Command="EditingCommands.ToggleItalic" Name="btnItalic">
                 <Image Source="/Resources/italicTextIcon.png" Height="12" Width="12" Margin="6,0"/>
-            </Button>
-            <Button>
+            </ToggleButton>
+
+            <ToggleButton Command="EditingCommands.ToggleUnderline" Name="btnUnderline">
                 <Image Source="/Resources/underlinedTextIcon.png" Height="12" Width="12" Margin="6,0"/>
-            </Button>
-            <ComboBox Padding="10,0" BorderBrush="Black">
-                <ComboBoxItem Content="Arial" IsSelected="True"/>
+            </ToggleButton>
+            <ComboBox Name="cmbFontFamily" SelectionChanged="cmbFontFamily_SelectionChanged" Padding="10,0" BorderBrush="Black" />
+            <!--<ComboBoxItem Content="Arial" IsSelected="True"/>
                 <ComboBoxItem Content="Times New Roman" />
-                <ComboBoxItem Content="Comic Sans" />
-            </ComboBox>
-            <ComboBox Padding="8,0" BorderBrush="Black">
-                <ComboBoxItem Content="9"/>
-                <ComboBoxItem Content="10"/>
-                <ComboBoxItem Content="11" IsSelected="True"/>
-                <ComboBoxItem Content="12"/>
-                <ComboBoxItem Content="14"/>
-                <ComboBoxItem Content="16"/>
-                <ComboBoxItem Content="18"/>
-            </ComboBox>
+                <ComboBoxItem Content="Comic Sans" />-->
+
+            <ComboBox Name="cmbFontSize" Padding="8,0" BorderBrush="Black" IsEditable="True" TextBoxBase.TextChanged="cmbFontSize_TextChanged" />
+
+
             <Separator/>
             <Button>
                 <Image Source="/add_image-512.webp" Height="12" Width="12" Margin="6,0"/>
             </Button>
         </ToolBar>
 
-        <TabControl x:Name="SectionsTabControl" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding OpenSections}" Template="{StaticResource TabControlTemplate}">
+        <TabControl x:Name="SectionsTabControl" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding OpenSections}" Template="{StaticResource TabControlTemplate}">
             <TabControl.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Title}">
@@ -138,7 +254,15 @@
                         </ListBox>
                         <Button Grid.Row="1" Grid.Column="0" Content="Dodaj notatkę" Command="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.AddNewNoteCommand }"
                                 CommandParameter="{Binding ElementName=SectionsTabControl, Path=SelectedItem}"/>
-                        <TextBox Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Text="{Binding ElementName=root, Path=DataContext.NoteText}"/>
+                        <!--<TextBox Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Text="{Binding ElementName=root, Path=DataContext.NoteText}"/>-->
+                        <RichTextBox Name="tbEditor" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" SelectionChanged="tbEditor_SelectionChanged"   AcceptsReturn="True" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible"
+                                     u:RichTextBoxHelper.DocumentXaml="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.NoteText, Mode=TwoWay}">
+                            <!--<FlowDocument>
+                                <Paragraph>
+                                    <Run Text="{Binding ElementName=root, Path=DataContext.NoteText, Mode=TwoWay}"/>
+                                </Paragraph>
+                            </FlowDocument>-->
+                        </RichTextBox>
                     </Grid>
                 </DataTemplate>
             </TabControl.ContentTemplate>

@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WpfNotebookProject"
         mc:Ignorable="d"
         Title="StartWindow" Height="450" Width="800">
     <Grid>
@@ -24,7 +23,7 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Image Grid.Row="0" Source="/new-file-icon.png"/>
+                <Image Grid.Row="0" Source="/Resources/newFile.png" Height="100"/>
                 <Label Grid.Row="1" Content="Utwórz nowy notes"/>
             </Grid>
         </Button>
@@ -34,10 +33,9 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Image Grid.Row="0" Source="/123.png"/>
+                <Image Grid.Row="0" Source="/Resources/openFile.png" Height="100"/>
                 <Label Grid.Row="1" Content="Otwórz istniejący notes"/>
             </Grid>
         </Button>
-        <!--<Button Grid.Row="2" Grid.Column="1" Content="Otwórz istniejący notes"></Button>-->
     </Grid>
 </Window>
