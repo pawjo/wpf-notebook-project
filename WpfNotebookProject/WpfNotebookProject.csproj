@@ -8,7 +8,16 @@
 
   <ItemGroup>
     <None Remove="Resources\boldTextIcon.png" />
+    <None Remove="Resources\closeAllFiles.png" />
+    <None Remove="Resources\closeFile.png" />
+    <None Remove="Resources\closePane.png" />
     <None Remove="Resources\italicTextIcon.png" />
+    <None Remove="Resources\newFile.png" />
+    <None Remove="Resources\openFile.png" />
+    <None Remove="Resources\printIcon.png" />
+    <None Remove="Resources\saveAll.png" />
+    <None Remove="Resources\saveFile.png" />
+    <None Remove="Resources\saveFileAs.png" />
     <None Remove="Resources\underlinedTextIcon.png" />
   </ItemGroup>
 
@@ -26,6 +35,36 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\closeAllFiles.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\closeFile.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\closePane.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\newFile.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\openFile.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\printIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\saveAll.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\saveFile.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\saveFileAs.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>

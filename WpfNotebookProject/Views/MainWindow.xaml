@@ -110,13 +110,13 @@
                             </BeginStoryboard>
                         </EventTrigger>
                     </Button.Triggers>
-                    <Image Margin="1" Source="/WpfNotebookProject;component/Resources/newFile.png"/>
+                    <Image Margin="1" Source="/Resources/newFile.png"/>
                 </Button>
 
                 <Button Command="{Binding OpenCommand, Mode=OneTime}" ToolTip="Otwórz notes"
                                 BorderBrush="Transparent" Background="Transparent" 
                                 Focusable="False" Width="28" Margin="0 0 2 0">
-                    <Image Margin="1" Source="/WpfNotebookProject;component/Resources/openFile.png"/>
+                    <Image Margin="1" Source="/Resources/openFile.png"/>
                 </Button>
 
                 <StackPanel IsEnabled="{Binding NotepadAvaliable, UpdateSourceTrigger=PropertyChanged}" Orientation="Horizontal">
@@ -142,34 +142,34 @@
                                 </BeginStoryboard>
                             </EventTrigger>
                         </Button.Triggers>
-                        <Image Margin="1" Source="/WpfNotebookProject;component/Resources/saveFile.png"/>
+                        <Image Margin="1" Source="/Resources/saveFile.png"/>
                     </Button>
 
                     <Button Command="{Binding SaveAsCommand, Mode=OneTime}" ToolTip="Zapisz notes jako..." 
                                     BorderBrush="Transparent" Background="Transparent" Width="28"
                                     Focusable="False" Margin="0 0 2 0">
-                        <Image Margin="1" Source="/WpfNotebookProject;component/Resources/saveFileAs.png"/>
+                        <Image Margin="1" Source="/Resources/saveFileAs.png"/>
                     </Button>
 
                     <Button Command="{Binding SaveAllCommand, Mode=OneTime}" ToolTip="Zapisz każdy obecnie otwarty"
                                     BorderBrush="Transparent" Background="Transparent" 
                                     Focusable="False" Width="28" Margin="0 0 2 0">
-                        <Image Margin="1" Source="/WpfNotebookProject;component/Resources/saveAll.png"/>
+                        <Image Margin="1" Source="/Resources/saveAll.png"/>
                     </Button>
                     <Button Command="{Binding CloseSelectedNotepadCommand, Mode=OneTime}" ToolTip="Zamknij obecny notes i usuń go" 
                                     BorderBrush="Transparent" Background="Transparent" 
                                     Focusable="False" Width="28" Margin="0 0 2 0">
-                        <Image Margin="1" Source="/WpfNotebookProject;component/Resources/closeFile.png"/>
+                        <Image Margin="1" Source="/Resources/closeFile.png"/>
                     </Button>
                     <Button Command="{Binding CloseAllNotepadsCommand, Mode=OneTime}" ToolTip="Zamknij wszystkie otwarte notesy i usuń je" 
                                     BorderBrush="Transparent" Background="Transparent" 
                                     Focusable="False" Width="28" Margin="0 0 2 0">
-                        <Image Margin="1" Source="/WpfNotebookProject;component/Resources/closeAllFiles.png"/>
+                        <Image Margin="1" Source="/Resources/closeAllFiles.png"/>
                     </Button>
                     <Button Command="{Binding PrintFileCommand, Mode=OneTime}" IsEnabled="True" 
                                     BorderBrush="Transparent" Background="Transparent"
                                     ToolTip="Drukuj tekst" Width="32" Margin="0">
-                        <Image Margin="1" Source="/WpfNotebookProject;component/Resources/printIcon.png"/>
+                        <Image Margin="1" Source="/Resources/printIcon.png"/>
                     </Button>
                 </StackPanel>
 
