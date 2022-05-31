@@ -26,7 +26,7 @@
                     <TabPanel Margin="2,2,2,0" x:Name="HeaderPanel" IsItemsHost="true" KeyboardNavigation.TabIndex="1"/>
                     <Button Grid.Column="1" Padding="5,0" FontWeight="Bold" FontSize="14" Command="{Binding DataContext.NewTabCommand, RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}}">+</Button>
                 </Grid>
-                <Border x:Name="ContentPanel" Grid.Column="0" Grid.Row="1" BorderBrush="#D0CEBF" BorderThickness="0,0,1,1" KeyboardNavigation.DirectionalNavigation="Contained" KeyboardNavigation.TabIndex="2" KeyboardNavigation.TabNavigation="Local">
+                <Border x:Name="ContentPanel" Grid.Column="0" Grid.Row="3" BorderBrush="#D0CEBF" BorderThickness="0,0,1,1" KeyboardNavigation.DirectionalNavigation="Contained" KeyboardNavigation.TabIndex="2" KeyboardNavigation.TabNavigation="Local">
                     <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
                         <Border Background="{TemplateBinding Background}">
                             <ContentPresenter ContentSource="SelectedContent"/>
@@ -38,6 +38,7 @@
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition/>
@@ -86,6 +87,94 @@
             <Button Grid.Column="1" Content="Wyszukaj" Click="testbtn"></Button>
         </Grid>
 
+        <Grid Grid.Row="1" Grid.ColumnSpan="2">
+            <DockPanel Margin="5,18,5,5" Background="{DynamicResource BackgroundColour}">
+                <Button  ToolTip="Nowy notes" 
+                                BorderBrush="Transparent" Background="Transparent" VerticalAlignment="Center"
+                                Focusable="False" Width="28" Height="28" Margin="0 0 2 0">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Duration="0:0:0.1" To="32" Storyboard.TargetProperty="Width" />
+                                    <DoubleAnimation Duration="0:0:0.1" To="32" Storyboard.TargetProperty="Height" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Duration="0:0:0.1" To="28" Storyboard.TargetProperty="Width" />
+                                    <DoubleAnimation Duration="0:0:0.1" To="28" Storyboard.TargetProperty="Height" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Button.Triggers>
+                    <Image Margin="1" Source="/WpfNotebookProject;component/Resources/newFile.png"/>
+                </Button>
+
+                <Button Command="{Binding OpenCommand, Mode=OneTime}" ToolTip="Otwórz notes"
+                                BorderBrush="Transparent" Background="Transparent" 
+                                Focusable="False" Width="28" Margin="0 0 2 0">
+                    <Image Margin="1" Source="/WpfNotebookProject;component/Resources/openFile.png"/>
+                </Button>
+
+                <StackPanel IsEnabled="{Binding NotepadAvaliable, UpdateSourceTrigger=PropertyChanged}" Orientation="Horizontal">
+                    <Button Command="{Binding SaveCommand, Mode=OneTime}" ToolTip="Zapisz notes" 
+                                    BorderBrush="Transparent"  VerticalAlignment="Center"
+                                    Background="Transparent" Focusable="False"
+                                    Width="28" Height="28" Margin="0 0 2 0">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="MouseEnter">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0:0:0.1" To="32" Storyboard.TargetProperty="Width" />
+                                        <DoubleAnimation Duration="0:0:0.1" To="32" Storyboard.TargetProperty="Height" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="MouseLeave">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0:0:0.1" To="28" Storyboard.TargetProperty="Width" />
+                                        <DoubleAnimation Duration="0:0:0.1" To="28" Storyboard.TargetProperty="Height" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                        <Image Margin="1" Source="/WpfNotebookProject;component/Resources/saveFile.png"/>
+                    </Button>
+
+                    <Button Command="{Binding SaveAsCommand, Mode=OneTime}" ToolTip="Zapisz notes jako..." 
+                                    BorderBrush="Transparent" Background="Transparent" Width="28"
+                                    Focusable="False" Margin="0 0 2 0">
+                        <Image Margin="1" Source="/WpfNotebookProject;component/Resources/saveFileAs.png"/>
+                    </Button>
+
+                    <Button Command="{Binding SaveAllCommand, Mode=OneTime}" ToolTip="Zapisz każdy obecnie otwarty"
+                                    BorderBrush="Transparent" Background="Transparent" 
+                                    Focusable="False" Width="28" Margin="0 0 2 0">
+                        <Image Margin="1" Source="/WpfNotebookProject;component/Resources/saveAll.png"/>
+                    </Button>
+                    <Button Command="{Binding CloseSelectedNotepadCommand, Mode=OneTime}" ToolTip="Zamknij obecny notes i usuń go" 
+                                    BorderBrush="Transparent" Background="Transparent" 
+                                    Focusable="False" Width="28" Margin="0 0 2 0">
+                        <Image Margin="1" Source="/WpfNotebookProject;component/Resources/closeFile.png"/>
+                    </Button>
+                    <Button Command="{Binding CloseAllNotepadsCommand, Mode=OneTime}" ToolTip="Zamknij wszystkie otwarte notesy i usuń je" 
+                                    BorderBrush="Transparent" Background="Transparent" 
+                                    Focusable="False" Width="28" Margin="0 0 2 0">
+                        <Image Margin="1" Source="/WpfNotebookProject;component/Resources/closeAllFiles.png"/>
+                    </Button>
+                    <Button Command="{Binding PrintFileCommand, Mode=OneTime}" IsEnabled="True" 
+                                    BorderBrush="Transparent" Background="Transparent"
+                                    ToolTip="Drukuj tekst" Width="32" Margin="0">
+                        <Image Margin="1" Source="/WpfNotebookProject;component/Resources/printIcon.png"/>
+                    </Button>
+                </StackPanel>
+
+            </DockPanel>
+        </Grid>
 
 
 
@@ -93,8 +182,7 @@
 
 
 
-
-        <ToolBar Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Background="Azure">
+        <ToolBar Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Background="Azure">
             <ToggleButton Command="EditingCommands.ToggleBold" Name="btnBold">
                 <Image Source="/Resources/boldTextIcon.png" Height="12" Width="12" Margin="6,0"/>
             </ToggleButton>
@@ -120,7 +208,7 @@
             </Button>
         </ToolBar>
 
-        <TabControl x:Name="SectionsTabControl" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding OpenSections}" Template="{StaticResource TabControlTemplate}">
+        <TabControl x:Name="SectionsTabControl" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding OpenSections}" Template="{StaticResource TabControlTemplate}">
             <TabControl.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Title}">
