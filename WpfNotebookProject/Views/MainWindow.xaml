@@ -208,7 +208,9 @@
             </Button>
         </ToolBar>
 
-        <TabControl x:Name="SectionsTabControl" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding OpenSections}" Template="{StaticResource TabControlTemplate}">
+        <TabControl x:Name="SectionsTabControl" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Template="{StaticResource TabControlTemplate}"
+                    ItemsSource="{Binding OpenSections}" 
+                    SelectedItem="{Binding ActualSection}">
             <TabControl.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Title}">
@@ -232,7 +234,9 @@
                             <ColumnDefinition Width="200"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <ListBox x:Name="NotesListBox" Grid.Column="0" Background="AliceBlue" ItemsSource="{Binding Notes}">
+                        <ListBox x:Name="NotesListBox" Grid.Column="0" Background="AliceBlue"
+                                 ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.OpenNotes }"
+                                 SelectedItem="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.OpenNote }">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="SelectionChanged">
                                     <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.ChangeOpenNoteCommand }"
