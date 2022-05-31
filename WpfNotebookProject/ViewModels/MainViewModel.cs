@@ -15,13 +15,11 @@ namespace WpfNotebookProject.ViewModels
 
         public ObservableCollection<Section> OpenSections
         {
-            get
+            get => _openSections ?? (_openSections = LoadSections());
+            set
             {
-                if (_openSections == null)
-                {
-                    LoadSections();
-                }
-                return _openSections;
+                _openSections = value;
+                OnPropertyChanged(nameof(OpenSections));
             }
         }
 
@@ -34,6 +32,7 @@ namespace WpfNotebookProject.ViewModels
             {
                 _actualSection = value;
                 OnPropertyChanged(nameof(ActualSection));
+                OpenNotes = GetNotesFromActualSection();
             }
         }
 
@@ -46,15 +45,22 @@ namespace WpfNotebookProject.ViewModels
             {
                 _openNotes = value;
                 OnPropertyChanged(nameof(OpenNotes));
+                OpenNote = OpenNotes.First();
             }
         }
 
-        private ObservableCollection<Note> GetNotesFromActualSection()
-        {
-            return new ObservableCollection<Note>(ActualSection.Notes);
-        }
 
-        public Note OpenNote { get; set; }
+
+        private Note _openNote;
+        public Note OpenNote
+        {
+            get => _openNote ?? (_openNote = OpenNotes.First());
+            set
+            {
+                _openNote = value;
+                OnPropertyChanged(nameof(OpenNote));
+            }
+        }
 
         public string NoteText
         {
@@ -148,23 +154,28 @@ namespace WpfNotebookProject.ViewModels
             OnPropertyChanged(nameof(NoteText));
         }
 
-        private void LoadSections()
+        private ObservableCollection<Section> LoadSections()
         {
             if (Notebook.Sections == null)
             {
                 Notebook.Sections = new List<Section>();
             }
-            _openSections = new ObservableCollection<Section>(Notebook.Sections);
-            if (_openSections.Count == 0)
+            var sections = new ObservableCollection<Section>(Notebook.Sections);
+            if (sections.Count == 0)
             {
-                AddNewTab();
+                sections.Add(GetNewSection());
             }
+            return sections;
         }
 
         private void AddNewTab()
         {
-            OpenSections.Add(GetNewSection());
+            var newSection = GetNewSection();
+            Notebook.Sections.Add(newSection);
+            OpenSections= LoadSections();
+            ActualSection = newSection;
         }
+
         private void AddNewNote(object param)
         {
             var section = param as Section;
@@ -194,5 +205,12 @@ namespace WpfNotebookProject.ViewModels
 
 
         private string GetNewNoteText() => XamlWriter.Save(new System.Windows.Documents.FlowDocument());
+
+        private ObservableCollection<Note> GetNotesFromActualSection()
+        {
+            var notes = new ObservableCollection<Note>(ActualSection.Notes);
+            OpenNote = notes.First();
+            return notes;
+        }
     }
 }

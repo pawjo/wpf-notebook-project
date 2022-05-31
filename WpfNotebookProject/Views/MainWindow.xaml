@@ -260,7 +260,7 @@
                                 CommandParameter="{Binding ElementName=SectionsTabControl, Path=SelectedItem}"/>
                         <!--<TextBox Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Text="{Binding ElementName=root, Path=DataContext.NoteText}"/>-->
                         <RichTextBox Name="tbEditor" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" SelectionChanged="tbEditor_SelectionChanged"   AcceptsReturn="True" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible"
-                                     u:RichTextBoxHelper.DocumentXaml="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.NoteText, Mode=TwoWay}">
+                                     u:RichTextBoxHelper.DocumentXaml="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.OpenNote.Text, Mode=TwoWay}">
                             <!--<FlowDocument>
                                 <Paragraph>
                                     <Run Text="{Binding ElementName=root, Path=DataContext.NoteText, Mode=TwoWay}"/>
