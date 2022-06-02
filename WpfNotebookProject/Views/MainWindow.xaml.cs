@@ -158,12 +158,5 @@ namespace WpfNotebookProject
 			}
 			return null;
 		}
-
-        private void testbtn(object sender, RoutedEventArgs e)
-        {
-			var blocks = tbEditor.Document.Blocks;
-			var firstBlock = blocks.FirstBlock;
-			;
-        }
     }
 }

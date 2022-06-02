@@ -71,16 +71,28 @@ namespace WpfNotebookProject.ViewModels
             }
         }
 
-        private bool _isEditMode;
+        private bool _isEditTitleNoteMode;
+
+        public bool IsEditTitleNoteMode
+        {
+            get => _isEditTitleNoteMode;
+            set
+            {
+                _isEditTitleNoteMode = value;
+                OnPropertyChanged(nameof(IsEditTitleNoteMode));
+                OnPropertyChanged(nameof(TextBlockVisibility));
+                OnPropertyChanged(nameof(TextBoxVisibility));
+            }
+        }
 
         public Visibility TextBlockVisibility
         {
-            get => _isEditMode ? Visibility.Collapsed : Visibility.Visible;
+            get => _isEditTitleNoteMode ? Visibility.Collapsed : Visibility.Visible;
         }
 
         public Visibility TextBoxVisibility
         {
-            get => _isEditMode ? Visibility.Visible : Visibility.Collapsed;
+            get => _isEditTitleNoteMode ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private RelayCommand _newTabCommand;
@@ -111,27 +123,45 @@ namespace WpfNotebookProject.ViewModels
         {
             get => _changeModeCommand ?? (_changeModeCommand = new RelayCommand(x =>
             {
-                _isEditMode = !_isEditMode;
+                _isEditTitleNoteMode = !_isEditTitleNoteMode;
                 OnPropertyChanged(nameof(TextBlockVisibility));
                 OnPropertyChanged(nameof(TextBoxVisibility));
             }));
         }
 
-        //private RelayCommand _turnOnEditNoteTitleCommand;
+        private RelayCommand _enableEditNoteTitleCommand;
 
-        //public RelayCommand TurnOnEditNoteTitleCommand
-        //{
-        //    get=>_turnOnEditNoteTitleCommand ??
-        //        (_turnOnEditNoteTitleCommand = new RelayCommand(x =>
-        //        {
-        //            var selectedItem = x as ListBoxItem;
+        public RelayCommand EnableEditNoteTitleCommand
+        {
+            get => _enableEditNoteTitleCommand ??
+                (_enableEditNoteTitleCommand = new RelayCommand(x =>
+                {
+                    IsEditTitleNoteMode = true;
+                }));
+        }
 
-        //            if (selectedItem != null)
-        //            {
-        //                var textBlock = selectedItem.
-        //            }
-        //        }
-        //}
+        private RelayCommand _disableEditNoteTitleCommand;
+
+        public RelayCommand DisableEditNoteTitleCommand
+        {
+            get => _disableEditNoteTitleCommand ??
+                (_disableEditNoteTitleCommand = new RelayCommand(x =>
+                {
+                    IsEditTitleNoteMode = false;
+                }));
+        }
+
+        private RelayCommand _selectAllTextCommand;
+
+        public RelayCommand SelectAllTextCommand
+        {
+            get => _selectAllTextCommand ??
+                (_selectAllTextCommand = new RelayCommand(x =>
+                {
+                    var textBox = x as TextBox;
+                    textBox.SelectAll();
+                }));
+        }
 
         public MainViewModel() : base()
         {
