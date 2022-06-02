@@ -44,7 +44,7 @@ namespace WpfNotebookProject
             var dialog = new OpenFileDialog();
             dialog.ShowDialog();
         }
-
+		// dark theme
 
         #region THEMES
         private void ChangeTheme(object sender, RoutedEventArgs e)
