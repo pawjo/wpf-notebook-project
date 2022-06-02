@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Controls;
 using System.Windows.Markup;
 using WpfNotebookProject.Models;
 
@@ -15,7 +14,7 @@ namespace WpfNotebookProject.ViewModels
 
         public ObservableCollection<Section> OpenSections
         {
-            get => _openSections ?? (_openSections = LoadSections());
+            get => _openSections ?? (_openSections = GetSections());
             set
             {
                 _openSections = value;
@@ -45,11 +44,8 @@ namespace WpfNotebookProject.ViewModels
             {
                 _openNotes = value;
                 OnPropertyChanged(nameof(OpenNotes));
-                OpenNote = OpenNotes.First();
             }
         }
-
-
 
         private Note _openNote;
         public Note OpenNote
@@ -59,29 +55,17 @@ namespace WpfNotebookProject.ViewModels
             {
                 _openNote = value;
                 OnPropertyChanged(nameof(OpenNote));
+                OnPropertyChanged(nameof(NoteText));
             }
         }
 
         public string NoteText
         {
-            get => OpenNote != null ? OpenNote.Text : GetNewNoteText();
+            get => OpenNote.Text;
             set
             {
-                if (OpenNote != null)
-                {
-                    OpenNote.Text = value;
-                }
-            }
-        }
-
-        private RelayCommand _changeOpenNoteCommand;
-
-        public RelayCommand ChangeOpenNoteCommand
-        {
-            get
-            {
-                return _changeOpenNoteCommand ??
-                    (_changeOpenNoteCommand = new RelayCommand(x => ChangeOpenNote(x)));
+                OpenNote.Text = value;
+                OnPropertyChanged(nameof(NoteText));
             }
         }
 
@@ -107,22 +91,11 @@ namespace WpfNotebookProject.ViewModels
             }
         }
 
-        private System.Windows.Documents.FlowDocument _doc;
-
-        public System.Windows.Documents.FlowDocument Doc
-        {
-            get => _doc ?? (_doc = new System.Windows.Documents.FlowDocument());
-            set
-            {
-                _doc = value;
-            }
-        }
-
-
         public MainViewModel() : base()
         {
             Notebook = new Notebook();
             Notebook.Sections = new List<Section>();
+            AddNewTab();
             //Notebook.Sections = new List<Section>
             //{
             //    new Section
@@ -147,32 +120,11 @@ namespace WpfNotebookProject.ViewModels
             //ChangeSection(Notebook.Sections[0]);
         }
 
-        private void ChangeOpenNote(object param)
-        {
-            var note = param as Note;
-            OpenNote = note ?? null;
-            OnPropertyChanged(nameof(NoteText));
-        }
-
-        private ObservableCollection<Section> LoadSections()
-        {
-            if (Notebook.Sections == null)
-            {
-                Notebook.Sections = new List<Section>();
-            }
-            var sections = new ObservableCollection<Section>(Notebook.Sections);
-            if (sections.Count == 0)
-            {
-                sections.Add(GetNewSection());
-            }
-            return sections;
-        }
-
         private void AddNewTab()
         {
             var newSection = GetNewSection();
             Notebook.Sections.Add(newSection);
-            OpenSections= LoadSections();
+            OpenSections = GetSections();
             ActualSection = newSection;
         }
 
@@ -184,10 +136,9 @@ namespace WpfNotebookProject.ViewModels
                 var newNote = GetNewNote();
                 ActualSection.Notes.Add(newNote);
                 OpenNotes = GetNotesFromActualSection();
-                ChangeOpenNote(newNote);
+                OpenNote = newNote;
             }
         }
-
 
         private Note GetNewNote() =>
             new Note
@@ -203,14 +154,13 @@ namespace WpfNotebookProject.ViewModels
                 Notes = new List<Note> { GetNewNote() }
             };
 
+        private string GetNewNoteText() =>
+            XamlWriter.Save(new System.Windows.Documents.FlowDocument());
 
-        private string GetNewNoteText() => XamlWriter.Save(new System.Windows.Documents.FlowDocument());
+        private ObservableCollection<Section> GetSections() =>
+            new ObservableCollection<Section>(Notebook.Sections);
 
-        private ObservableCollection<Note> GetNotesFromActualSection()
-        {
-            var notes = new ObservableCollection<Note>(ActualSection.Notes);
-            OpenNote = notes.First();
-            return notes;
-        }
+        private ObservableCollection<Note> GetNotesFromActualSection() =>
+            new ObservableCollection<Note>(ActualSection.Notes);
     }
 }

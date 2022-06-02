@@ -237,12 +237,12 @@
                         <ListBox x:Name="NotesListBox" Grid.Column="0" Background="AliceBlue"
                                  ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.OpenNotes }"
                                  SelectedItem="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.OpenNote }">
-                            <i:Interaction.Triggers>
+                            <!--<i:Interaction.Triggers>
                                 <i:EventTrigger EventName="SelectionChanged">
                                     <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.ChangeOpenNoteCommand }"
                                         CommandParameter="{Binding ElementName=NotesListBox, Path=SelectedItem}"/>
                                 </i:EventTrigger>
-                            </i:Interaction.Triggers>
+                            </i:Interaction.Triggers>-->
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Title}">
@@ -258,14 +258,8 @@
                         </ListBox>
                         <Button Grid.Row="1" Grid.Column="0" Content="Dodaj notatkę" Command="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.AddNewNoteCommand }"
                                 CommandParameter="{Binding ElementName=SectionsTabControl, Path=SelectedItem}"/>
-                        <!--<TextBox Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Text="{Binding ElementName=root, Path=DataContext.NoteText}"/>-->
                         <RichTextBox Name="tbEditor" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" SelectionChanged="tbEditor_SelectionChanged"   AcceptsReturn="True" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible"
-                                     u:RichTextBoxHelper.DocumentXaml="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.OpenNote.Text, Mode=TwoWay}">
-                            <!--<FlowDocument>
-                                <Paragraph>
-                                    <Run Text="{Binding ElementName=root, Path=DataContext.NoteText, Mode=TwoWay}"/>
-                                </Paragraph>
-                            </FlowDocument>-->
+                                     u:RichTextBoxHelper.DocumentXaml="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.NoteText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         </RichTextBox>
                     </Grid>
                 </DataTemplate>
