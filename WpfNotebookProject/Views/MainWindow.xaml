@@ -245,14 +245,14 @@
                             </i:Interaction.Triggers>-->
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Title}">
-                                        <TextBlock.ContextMenu>
+                                    <TextBox Text="{Binding Title}" IsReadOnly="True">
+                                        <TextBox.ContextMenu>
                                             <ContextMenu>
                                                 <MenuItem Header="Zmień nazwę"/>
                                                 <MenuItem Header="Usuń"/>
                                             </ContextMenu>
-                                        </TextBlock.ContextMenu>
-                                    </TextBlock>
+                                        </TextBox.ContextMenu>
+                                    </TextBox>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
