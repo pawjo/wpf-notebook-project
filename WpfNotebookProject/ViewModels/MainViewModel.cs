@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Markup;
 using WpfNotebookProject.Models;
 
@@ -69,6 +71,18 @@ namespace WpfNotebookProject.ViewModels
             }
         }
 
+        private bool _isEditMode;
+
+        public Visibility TextBlockVisibility
+        {
+            get => _isEditMode ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        public Visibility TextBoxVisibility
+        {
+            get => _isEditMode ? Visibility.Visible : Visibility.Collapsed;
+        }
+
         private RelayCommand _newTabCommand;
 
         public RelayCommand NewTabCommand
@@ -90,6 +104,34 @@ namespace WpfNotebookProject.ViewModels
                     (_addNewNoteCommand = new RelayCommand(x => AddNewNote(x)));
             }
         }
+
+        private RelayCommand _changeModeCommand;
+
+        public RelayCommand ChangeModeCommand
+        {
+            get => _changeModeCommand ?? (_changeModeCommand = new RelayCommand(x =>
+            {
+                _isEditMode = !_isEditMode;
+                OnPropertyChanged(nameof(TextBlockVisibility));
+                OnPropertyChanged(nameof(TextBoxVisibility));
+            }));
+        }
+
+        //private RelayCommand _turnOnEditNoteTitleCommand;
+
+        //public RelayCommand TurnOnEditNoteTitleCommand
+        //{
+        //    get=>_turnOnEditNoteTitleCommand ??
+        //        (_turnOnEditNoteTitleCommand = new RelayCommand(x =>
+        //        {
+        //            var selectedItem = x as ListBoxItem;
+
+        //            if (selectedItem != null)
+        //            {
+        //                var textBlock = selectedItem.
+        //            }
+        //        }
+        //}
 
         public MainViewModel() : base()
         {
