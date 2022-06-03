@@ -8,8 +8,8 @@ using System.Windows.Media;
 
 namespace WpfNotebookProject.Themes
 {
-	public static class ThemesController
-	{
+    public static class ThemesController
+    {
         public enum ThemeTypes
         {
             Light, ColourfulLight,
@@ -28,16 +28,25 @@ namespace WpfNotebookProject.Themes
         {
             ThemeDictionary = new ResourceDictionary() { Source = uri };
         }
+
         public static void SetTheme(ThemeTypes theme)
         {
             string themeName = null;
             CurrentTheme = theme;
             switch (theme)
             {
-                case ThemeTypes.Dark: themeName = "DarkTheme"; break;
-                case ThemeTypes.Light: themeName = "LightTheme"; break;
-                case ThemeTypes.ColourfulDark: themeName = "ColourfulDarkTheme"; break;
-                case ThemeTypes.ColourfulLight: themeName = "ColourfulLightTheme"; break;
+                case ThemeTypes.Dark:
+                    themeName = "DarkTheme";
+                    break;
+                case ThemeTypes.Light:
+                    themeName = "LightTheme";
+                    break;
+                case ThemeTypes.ColourfulDark:
+                    themeName = "ColourfulDarkTheme";
+                    break;
+                case ThemeTypes.ColourfulLight:
+                    themeName = "ColourfulLightTheme";
+                    break;
             }
 
             try
@@ -45,20 +54,9 @@ namespace WpfNotebookProject.Themes
                 if (!string.IsNullOrEmpty(themeName))
                     ChangeTheme(new Uri($"Themes/{themeName}.xaml", UriKind.Relative));
             }
-            catch { }
-        }
-
-        public static object GetResource(object key)
-        {
-            return ThemeDictionary[key];
-        }
-
-        public static SolidColorBrush GetBrush(string name)
-        {
-            if (GetResource(name) is SolidColorBrush brush)
-                return brush;
-            else
-                return new SolidColorBrush(Colors.White);
+            catch
+            {
+            }
         }
     }
 }
