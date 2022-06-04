@@ -13,5 +13,6 @@ namespace WpfNotebookProject
     /// </summary>
     public partial class App : Application
     {
+
     }
 }
