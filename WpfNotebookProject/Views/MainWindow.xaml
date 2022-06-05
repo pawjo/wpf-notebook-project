@@ -249,7 +249,8 @@
                                         <StackPanel.ContextMenu>
                                             <ContextMenu>
                                                 <MenuItem Header="Zmień nazwę" Command="{Binding PlacementTarget.Tag.EnableEditNoteTitleCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
-                                                <MenuItem Header="Usuń"/>
+                                                <MenuItem Header="Usuń" Command="{Binding PlacementTarget.Tag.DeleteNoteCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                          CommandParameter="{Binding PlacementTarget.Tag.OpenNote, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
                                             </ContextMenu>
                                         </StackPanel.ContextMenu>
                                         <TextBlock x:Name="TitleTextBlock" Text="{Binding Title}">

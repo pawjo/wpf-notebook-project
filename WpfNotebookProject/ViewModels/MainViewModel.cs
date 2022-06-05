@@ -163,6 +163,23 @@ namespace WpfNotebookProject.ViewModels
                 }));
         }
 
+        private RelayCommand _deleteNoteCommand;
+
+        public RelayCommand DeleteNoteCommand
+        {
+            get => _deleteNoteCommand ??
+                (_deleteNoteCommand = new RelayCommand(x =>
+                {
+                    var note = x as Note;
+                    if (note != null)
+                    {
+                        ActualSection.Notes.Remove(note);
+                        OpenNotes = GetNotesFromActualSection();
+                        OpenNote = OpenNotes.First();
+                    }
+                }));
+        }
+
         public MainViewModel() : base()
         {
             Notebook = new Notebook();
