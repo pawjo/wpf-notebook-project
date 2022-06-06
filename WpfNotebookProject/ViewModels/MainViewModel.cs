@@ -71,28 +71,52 @@ namespace WpfNotebookProject.ViewModels
             }
         }
 
-        private bool _isEditTitleNoteMode;
+        private bool _isEditNoteTitleMode;
 
-        public bool IsEditTitleNoteMode
+        public bool IsEditNoteTitleMode
         {
-            get => _isEditTitleNoteMode;
+            get => _isEditNoteTitleMode;
             set
             {
-                _isEditTitleNoteMode = value;
-                OnPropertyChanged(nameof(IsEditTitleNoteMode));
-                OnPropertyChanged(nameof(TextBlockVisibility));
-                OnPropertyChanged(nameof(TextBoxVisibility));
+                _isEditNoteTitleMode = value;
+                OnPropertyChanged(nameof(IsEditNoteTitleMode));
+                OnPropertyChanged(nameof(NoteTitleTextBlockVisibility));
+                OnPropertyChanged(nameof(NoteTitleTextBoxVisibility));
             }
         }
 
-        public Visibility TextBlockVisibility
+        public Visibility NoteTitleTextBlockVisibility
         {
-            get => _isEditTitleNoteMode ? Visibility.Collapsed : Visibility.Visible;
+            get => _isEditNoteTitleMode ? Visibility.Collapsed : Visibility.Visible;
         }
 
-        public Visibility TextBoxVisibility
+        public Visibility NoteTitleTextBoxVisibility
         {
-            get => _isEditTitleNoteMode ? Visibility.Visible : Visibility.Collapsed;
+            get => _isEditNoteTitleMode ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private bool _isEditSectionTitleMode;
+
+        public bool IsEditSectionTitleMode
+        {
+            get => _isEditSectionTitleMode;
+            set
+            {
+                _isEditSectionTitleMode = value;
+                OnPropertyChanged(nameof(IsEditSectionTitleMode));
+                OnPropertyChanged(nameof(SectionTitleTextBlockVisibility));
+                OnPropertyChanged(nameof(SectionTitleTextBoxVisibility));
+            }
+        }
+
+        public Visibility SectionTitleTextBlockVisibility
+        {
+            get => _isEditSectionTitleMode ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        public Visibility SectionTitleTextBoxVisibility
+        {
+            get => _isEditSectionTitleMode ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private RelayCommand _newTabCommand;
@@ -123,9 +147,9 @@ namespace WpfNotebookProject.ViewModels
         {
             get => _changeModeCommand ?? (_changeModeCommand = new RelayCommand(x =>
             {
-                _isEditTitleNoteMode = !_isEditTitleNoteMode;
-                OnPropertyChanged(nameof(TextBlockVisibility));
-                OnPropertyChanged(nameof(TextBoxVisibility));
+                _isEditNoteTitleMode = !_isEditNoteTitleMode;
+                OnPropertyChanged(nameof(NoteTitleTextBlockVisibility));
+                OnPropertyChanged(nameof(NoteTitleTextBoxVisibility));
             }));
         }
 
@@ -136,7 +160,7 @@ namespace WpfNotebookProject.ViewModels
             get => _enableEditNoteTitleCommand ??
                 (_enableEditNoteTitleCommand = new RelayCommand(x =>
                 {
-                    IsEditTitleNoteMode = true;
+                    IsEditNoteTitleMode = true;
                 }));
         }
 
@@ -147,7 +171,7 @@ namespace WpfNotebookProject.ViewModels
             get => _disableEditNoteTitleCommand ??
                 (_disableEditNoteTitleCommand = new RelayCommand(x =>
                 {
-                    IsEditTitleNoteMode = false;
+                    IsEditNoteTitleMode = false;
                 }));
         }
 
@@ -177,6 +201,28 @@ namespace WpfNotebookProject.ViewModels
                         OpenNotes = GetNotesFromActualSection();
                         OpenNote = OpenNotes.First();
                     }
+                }));
+        }
+
+        private RelayCommand _enableEditSectionTitleCommand;
+
+        public RelayCommand EnableEditSectionTitleCommand
+        {
+            get => _enableEditSectionTitleCommand ??
+                (_enableEditSectionTitleCommand = new RelayCommand(x =>
+                {
+                    IsEditSectionTitleMode = true;
+                }));
+        }
+
+        private RelayCommand _disableEditSectionTitleCommand;
+
+        public RelayCommand DisableEditSectionTitleCommand
+        {
+            get => _disableEditSectionTitleCommand ??
+                (_disableEditSectionTitleCommand = new RelayCommand(x =>
+                {
+                    IsEditSectionTitleMode = false;
                 }));
         }
 

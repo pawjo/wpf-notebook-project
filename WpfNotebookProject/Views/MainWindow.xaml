@@ -213,14 +213,72 @@
                     SelectedItem="{Binding ActualSection}">
             <TabControl.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Title}">
+                    <!--<TextBlock Text="{Binding Title}">
                         <TextBlock.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Zmień nazwę"/>
                                 <MenuItem Header="Usuń"/>
                             </ContextMenu>
                         </TextBlock.ContextMenu>
-                    </TextBlock>
+                    </TextBlock>-->
+                    <StackPanel Tag="{Binding DataContext, ElementName=root}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="LostFocus">
+                                <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor},
+                                                    Path=DataContext.DisableEditSectionTitleCommand }"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <StackPanel.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Zmień nazwę" Command="{Binding PlacementTarget.Tag.EnableEditSectionTitleCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                <MenuItem Header="Usuń" />
+                            </ContextMenu>
+                        </StackPanel.ContextMenu>
+                        <TextBlock x:Name="TitleTextBlock" Text="{Binding Title}">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type TabItem}}, 
+                                                            Path=IsSelected}" Value="True">
+                                            <Setter Property="Visibility" Value="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, 
+                                                                Path=DataContext.SectionTitleTextBlockVisibility }"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type TabItem}},
+                                                            Path=IsSelected}" Value="False">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <TextBox x:Name="TitleTextBox" Text="{Binding Title}">
+                            <TextBox.Style>
+                                <Style TargetType="{x:Type TextBox}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type TabItem}},
+                                                            Path=IsSelected}" Value="True">
+                                            <Setter Property="Visibility" Value="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor},
+                                                                Path=DataContext.SectionTitleTextBoxVisibility }"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type TabItem}}, 
+                                                            Path=IsSelected}" Value="False">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Visibility}" Value="Visible">
+                                            <Setter Property="FocusManager.FocusedElement" Value="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="GotFocus">
+                                    <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor},
+                                                        Path=DataContext.SelectAllTextCommand }"
+                                                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=TextBox}}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBox>
+                    </StackPanel>
                 </DataTemplate>
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
@@ -260,7 +318,7 @@
                                                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ListBoxItem}}, 
                                                             Path=IsSelected}" Value="True">
                                                             <Setter Property="Visibility" Value="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, 
-                                                                Path=DataContext.TextBlockVisibility }"/>
+                                                                Path=DataContext.NoteTitleTextBlockVisibility }"/>
                                                         </DataTrigger>
                                                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ListBoxItem}},
                                                             Path=IsSelected}" Value="False">
@@ -277,7 +335,7 @@
                                                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ListBoxItem}},
                                                             Path=IsSelected}" Value="True">
                                                             <Setter Property="Visibility" Value="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor},
-                                                                Path=DataContext.TextBoxVisibility }"/>
+                                                                Path=DataContext.NoteTitleTextBoxVisibility }"/>
                                                         </DataTrigger>
                                                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ListBoxItem}}, 
                                                             Path=IsSelected}" Value="False">
