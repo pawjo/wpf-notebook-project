@@ -141,18 +141,7 @@ namespace WpfNotebookProject.ViewModels
             }
         }
 
-        private RelayCommand _changeModeCommand;
-
-        public RelayCommand ChangeModeCommand
-        {
-            get => _changeModeCommand ?? (_changeModeCommand = new RelayCommand(x =>
-            {
-                _isEditNoteTitleMode = !_isEditNoteTitleMode;
-                OnPropertyChanged(nameof(NoteTitleTextBlockVisibility));
-                OnPropertyChanged(nameof(NoteTitleTextBoxVisibility));
-            }));
-        }
-
+        
         private RelayCommand _enableEditNoteTitleCommand;
 
         public RelayCommand EnableEditNoteTitleCommand
@@ -242,20 +231,6 @@ namespace WpfNotebookProject.ViewModels
                         OpenNote = OpenNotes.First();
                     }
                 }));
-        }
-
-        private RelayCommand _testCommand;
-
-        public RelayCommand TestCommand
-        {
-            get => _testCommand ??
-                 (_testCommand = new RelayCommand(x =>
-                 {
-                     OpenSections = GetSections();
-                     ActualSection = OpenSections.First();
-                     OpenNotes = GetNotesFromActualSection();
-                     OpenNote = OpenNotes.First();
-                 }));
         }
 
         public MainViewModel() : base()

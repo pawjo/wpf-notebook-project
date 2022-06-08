@@ -124,7 +124,7 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <TextBox Grid.Column="0" Padding="4" Text="Wyszukaj..."></TextBox>
-            <Button Grid.Column="1" Content="Wyszukaj" Height="26" VerticalAlignment="Top" Command="{Binding TestCommand}"></Button>
+            <Button Grid.Column="1" Content="Wyszukaj" Height="26" VerticalAlignment="Top"></Button>
         </Grid>
 
        
