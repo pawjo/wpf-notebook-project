@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Markup;
 using WpfNotebookProject.Models;
 
@@ -69,6 +71,54 @@ namespace WpfNotebookProject.ViewModels
             }
         }
 
+        private bool _isEditNoteTitleMode;
+
+        public bool IsEditNoteTitleMode
+        {
+            get => _isEditNoteTitleMode;
+            set
+            {
+                _isEditNoteTitleMode = value;
+                OnPropertyChanged(nameof(IsEditNoteTitleMode));
+                OnPropertyChanged(nameof(NoteTitleTextBlockVisibility));
+                OnPropertyChanged(nameof(NoteTitleTextBoxVisibility));
+            }
+        }
+
+        public Visibility NoteTitleTextBlockVisibility
+        {
+            get => _isEditNoteTitleMode ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        public Visibility NoteTitleTextBoxVisibility
+        {
+            get => _isEditNoteTitleMode ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private bool _isEditSectionTitleMode;
+
+        public bool IsEditSectionTitleMode
+        {
+            get => _isEditSectionTitleMode;
+            set
+            {
+                _isEditSectionTitleMode = value;
+                OnPropertyChanged(nameof(IsEditSectionTitleMode));
+                OnPropertyChanged(nameof(SectionTitleTextBlockVisibility));
+                OnPropertyChanged(nameof(SectionTitleTextBoxVisibility));
+            }
+        }
+
+        public Visibility SectionTitleTextBlockVisibility
+        {
+            get => _isEditSectionTitleMode ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        public Visibility SectionTitleTextBoxVisibility
+        {
+            get => _isEditSectionTitleMode ? Visibility.Visible : Visibility.Collapsed;
+        }
+
         private RelayCommand _newTabCommand;
 
         public RelayCommand NewTabCommand
@@ -89,6 +139,98 @@ namespace WpfNotebookProject.ViewModels
                 return _addNewNoteCommand ??
                     (_addNewNoteCommand = new RelayCommand(x => AddNewNote(x)));
             }
+        }
+
+        
+        private RelayCommand _enableEditNoteTitleCommand;
+
+        public RelayCommand EnableEditNoteTitleCommand
+        {
+            get => _enableEditNoteTitleCommand ??
+                (_enableEditNoteTitleCommand = new RelayCommand(x =>
+                {
+                    IsEditNoteTitleMode = true;
+                }));
+        }
+
+        private RelayCommand _disableEditNoteTitleCommand;
+
+        public RelayCommand DisableEditNoteTitleCommand
+        {
+            get => _disableEditNoteTitleCommand ??
+                (_disableEditNoteTitleCommand = new RelayCommand(x =>
+                {
+                    IsEditNoteTitleMode = false;
+                }));
+        }
+
+        private RelayCommand _selectAllTextCommand;
+
+        public RelayCommand SelectAllTextCommand
+        {
+            get => _selectAllTextCommand ??
+                (_selectAllTextCommand = new RelayCommand(x =>
+                {
+                    var textBox = x as TextBox;
+                    textBox.SelectAll();
+                }));
+        }
+
+        private RelayCommand _deleteNoteCommand;
+
+        public RelayCommand DeleteNoteCommand
+        {
+            get => _deleteNoteCommand ??
+                (_deleteNoteCommand = new RelayCommand(x =>
+                {
+                    var note = x as Note;
+                    if (note != null)
+                    {
+                        ActualSection.Notes.Remove(note);
+                        OpenNotes = GetNotesFromActualSection();
+                        OpenNote = OpenNotes.First();
+                    }
+                }));
+        }
+
+        private RelayCommand _enableEditSectionTitleCommand;
+
+        public RelayCommand EnableEditSectionTitleCommand
+        {
+            get => _enableEditSectionTitleCommand ??
+                (_enableEditSectionTitleCommand = new RelayCommand(x =>
+                {
+                    IsEditSectionTitleMode = true;
+                }));
+        }
+
+        private RelayCommand _disableEditSectionTitleCommand;
+
+        public RelayCommand DisableEditSectionTitleCommand
+        {
+            get => _disableEditSectionTitleCommand ??
+                (_disableEditSectionTitleCommand = new RelayCommand(x =>
+                {
+                    IsEditSectionTitleMode = false;
+                }));
+        }
+
+        private RelayCommand _deleteSectionCommand;
+
+        public RelayCommand DeleteSectionCommand
+        {
+            get => _deleteSectionCommand ??
+                (_deleteSectionCommand = new RelayCommand(x =>
+                {
+                    if (OpenSections.Count > 1)
+                    {
+                        Notebook.Sections.Remove(ActualSection);
+                        ActualSection = OpenSections.First(x => x != ActualSection);
+                        OpenSections = GetSections();
+                        OpenNotes = GetNotesFromActualSection();
+                        OpenNote = OpenNotes.First();
+                    }
+                }));
         }
 
         public MainViewModel() : base()

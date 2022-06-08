@@ -41,7 +41,12 @@ namespace WpfNotebookProject.Utils
                     var richTextBox = (RichTextBox)obj;
                     try
                     {
-                        var stream = new MemoryStream(Encoding.UTF8.GetBytes(GetDocumentXaml(richTextBox)));
+                        var xaml = GetDocumentXaml(richTextBox);
+                        if (string.IsNullOrWhiteSpace(xaml))
+                        {
+                            xaml = XamlWriter.Save(new FlowDocument());
+                        }
+                        var stream = new MemoryStream(Encoding.UTF8.GetBytes(xaml));
                         var doc = (FlowDocument)XamlReader.Load(stream);
 
                         richTextBox.Document = doc;

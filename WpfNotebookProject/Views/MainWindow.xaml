@@ -44,6 +44,12 @@
                 </Border>
             </Grid>
         </ControlTemplate>
+        <ContextMenu x:Key="TabItemContextMenu">
+            <MenuItem Header="Zmień nazwę" Command="{Binding PlacementTarget.Tag.EnableEditSectionTitleCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+            <!--<MenuItem Header="Usuń" Command="{Binding PlacementTarget.Tag.DeleteSectionCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                          CommandParameter="{Binding Path=Header, RelativeSource={RelativeSource AncestorType=TabItem}}"/>-->
+            <MenuItem Header="Usuń" Command="{Binding PlacementTarget.Tag.DeleteSectionCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+        </ContextMenu>
     </Window.Resources>
     <Grid Background="{DynamicResource BackgroundColour}">
         <Grid.RowDefinitions>
@@ -118,7 +124,7 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <TextBox Grid.Column="0" Padding="4" Text="Wyszukaj..."></TextBox>
-            <Button Grid.Column="1" Content="Wyszukaj" Click="testbtn"></Button>
+            <Button Grid.Column="1" Content="Wyszukaj" Height="26" VerticalAlignment="Top"></Button>
         </Grid>
 
        
@@ -239,14 +245,66 @@
                     SelectedItem="{Binding ActualSection}" FontFamily="Arial">
             <TabControl.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Title}">
-                        <TextBlock.ContextMenu>
+                    <StackPanel >
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="LostFocus">
+                                <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor},
+                                                    Path=DataContext.DisableEditSectionTitleCommand }"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <!--<StackPanel.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Zmień nazwę"/>
-                                <MenuItem Header="Usuń"/>
+                                <MenuItem Header="Zmień nazwę" Command="{Binding PlacementTarget.Tag.EnableEditSectionTitleCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                <MenuItem Header="Usuń" Command="{Binding PlacementTarget.Tag.DeleteSectionCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                          CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=TabItem}}"/>
                             </ContextMenu>
-                        </TextBlock.ContextMenu>
-                    </TextBlock>
+                        </StackPanel.ContextMenu>-->
+                        <TextBlock x:Name="TitleTextBlock" Text="{Binding Title}" Tag="{Binding DataContext, ElementName=root}">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type TabItem}}, 
+                                                            Path=IsSelected}" Value="True">
+                                            <Setter Property="Visibility" Value="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, 
+                                                                Path=DataContext.SectionTitleTextBlockVisibility }"/>
+                                            <Setter Property="ContextMenu" Value="{StaticResource TabItemContextMenu}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type TabItem}},
+                                                            Path=IsSelected}" Value="False">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <TextBox x:Name="TitleTextBox" Text="{Binding Title}">
+                            <TextBox.Style>
+                                <Style TargetType="{x:Type TextBox}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type TabItem}},
+                                                            Path=IsSelected}" Value="True">
+                                            <Setter Property="Visibility" Value="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor},
+                                                                Path=DataContext.SectionTitleTextBoxVisibility }"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type TabItem}}, 
+                                                            Path=IsSelected}" Value="False">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Visibility}" Value="Visible">
+                                            <Setter Property="FocusManager.FocusedElement" Value="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="GotFocus">
+                                    <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor},
+                                                        Path=DataContext.SelectAllTextCommand }"
+                                                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=TextBox}}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBox>
+                    </StackPanel>
                 </DataTemplate>
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
@@ -263,22 +321,67 @@
                         <ListBox x:Name="NotesListBox" Grid.Column="0" 
                                  ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.OpenNotes }"
                                  SelectedItem="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.OpenNote }">
-                            <!--<i:Interaction.Triggers>
-                                <i:EventTrigger EventName="SelectionChanged">
-                                    <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.ChangeOpenNoteCommand }"
-                                        CommandParameter="{Binding ElementName=NotesListBox, Path=SelectedItem}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>-->
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Title}">
-                                        <TextBlock.ContextMenu>
+                                    <StackPanel Tag="{Binding DataContext, ElementName=root}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="LostFocus">
+                                                <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor},
+                                                    Path=DataContext.DisableEditNoteTitleCommand }"/>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <StackPanel.ContextMenu>
                                             <ContextMenu>
-                                                <MenuItem Header="Zmień nazwę"/>
-                                                <MenuItem Header="Usuń"/>
+                                                <MenuItem Header="Zmień nazwę" Command="{Binding PlacementTarget.Tag.EnableEditNoteTitleCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                                <MenuItem Header="Usuń" Command="{Binding PlacementTarget.Tag.DeleteNoteCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                          CommandParameter="{Binding PlacementTarget.Tag.OpenNote, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
                                             </ContextMenu>
-                                        </TextBlock.ContextMenu>
-                                    </TextBlock>
+                                        </StackPanel.ContextMenu>
+                                        <TextBlock x:Name="TitleTextBlock" Text="{Binding Title}">
+                                            <TextBlock.Style>
+                                                <Style TargetType="{x:Type TextBlock}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ListBoxItem}}, 
+                                                            Path=IsSelected}" Value="True">
+                                                            <Setter Property="Visibility" Value="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, 
+                                                                Path=DataContext.NoteTitleTextBlockVisibility }"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ListBoxItem}},
+                                                            Path=IsSelected}" Value="False">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                        <TextBox x:Name="TitleTextBox" Text="{Binding Title}">
+                                            <TextBox.Style>
+                                                <Style TargetType="{x:Type TextBox}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ListBoxItem}},
+                                                            Path=IsSelected}" Value="True">
+                                                            <Setter Property="Visibility" Value="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor},
+                                                                Path=DataContext.NoteTitleTextBoxVisibility }"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ListBoxItem}}, 
+                                                            Path=IsSelected}" Value="False">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Visibility}" Value="Visible">
+                                                            <Setter Property="FocusManager.FocusedElement" Value="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBox.Style>
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="GotFocus">
+                                                    <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor},
+                                                        Path=DataContext.SelectAllTextCommand }"
+                                                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=TextBox}}"/>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </TextBox>
+                                    </StackPanel>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
