@@ -226,6 +226,38 @@ namespace WpfNotebookProject.ViewModels
                 }));
         }
 
+        private RelayCommand _deleteSectionCommand;
+
+        public RelayCommand DeleteSectionCommand
+        {
+            get => _deleteSectionCommand ??
+                (_deleteSectionCommand = new RelayCommand(x =>
+                {
+                    if (OpenSections.Count > 1)
+                    {
+                        Notebook.Sections.Remove(ActualSection);
+                        ActualSection = OpenSections.First(x => x != ActualSection);
+                        OpenSections = GetSections();
+                        OpenNotes = GetNotesFromActualSection();
+                        OpenNote = OpenNotes.First();
+                    }
+                }));
+        }
+
+        private RelayCommand _testCommand;
+
+        public RelayCommand TestCommand
+        {
+            get => _testCommand ??
+                 (_testCommand = new RelayCommand(x =>
+                 {
+                     OpenSections = GetSections();
+                     ActualSection = OpenSections.First();
+                     OpenNotes = GetNotesFromActualSection();
+                     OpenNote = OpenNotes.First();
+                 }));
+        }
+
         public MainViewModel() : base()
         {
             Notebook = new Notebook();
