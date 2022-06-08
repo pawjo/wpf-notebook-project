@@ -6,10 +6,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:u="clr-namespace:WpfNotebookProject.Utils"
         mc:Ignorable="d"
-        Title="Notes" Height="450" Width="800">
+        Style="{DynamicResource CustomWindowStyle}"
+        BorderBrush="{DynamicResource ControlDefaultBackground}"
+        WindowStartupLocation="CenterScreen"
+        Title="Notes"
+        MinHeight="535"
+        MinWidth="875"
+        Height="535" 
+        Width="875">
     <Window.Resources>
+        <DropShadowBitmapEffect x:Key="NormalShadow" ShadowDepth="2" Softness="0.2" Opacity="0.64"/>
+
         <ControlTemplate x:Key="TabControlTemplate" TargetType="TabControl">
-            <Grid ClipToBounds="true" SnapsToDevicePixels="true" KeyboardNavigation.TabNavigation="Local">
+            <Grid  ClipToBounds="true" SnapsToDevicePixels="true" KeyboardNavigation.TabNavigation="Local">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition x:Name="ColumnDefinition0"/>
                     <ColumnDefinition x:Name="ColumnDefinition1" Width="0"/>
@@ -42,7 +51,7 @@
             <MenuItem Header="Usuń" Command="{Binding PlacementTarget.Tag.DeleteSectionCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
         </ContextMenu>
     </Window.Resources>
-    <Grid>
+    <Grid Background="{DynamicResource BackgroundColour}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -53,36 +62,61 @@
             <ColumnDefinition Width="200"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Menu Grid.Row="0" Grid.Column="0" Padding="4" Background="Azure">
-            <MenuItem Header="Menu">
-                <MenuItem Header="Nowy notes"/>
-                <MenuItem Header="Otwórz notes" Click="OpenFileMenuItem_Click"/>
-                <MenuItem Header="Zapisz notes"/>
-                <MenuItem Header="Zapisz notes jako"/>
-                <MenuItem Header="Opcje"/>
+        <Menu Grid.Row="0" Grid.Column="0" Padding="4" Background="{DynamicResource BackgroundColour}">
+            <MenuItem Header="Plik">
+                <MenuItem Header="Nowy notes">
+                    <MenuItem.Icon>
+                        <Image Source="/WpfNotebookProject;component/Resources/newFile.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                
+                <MenuItem Header="Otwórz notes" Click="OpenFileMenuItem_Click">
+                    <MenuItem.Icon>
+                        <Image Source="/WpfNotebookProject;component/Resources/openFile.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                
+                <MenuItem Header="Zapisz notes">
+                    <MenuItem.Icon>
+                        <Image Source="/WpfNotebookProject;component/Resources/saveFile.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                
+                <MenuItem Header="Zapisz notes jako">
+                    <MenuItem.Icon>
+                        <Image Source="/WpfNotebookProject;component/Resources/saveFileAs.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                
+                <MenuItem Header="Opcje - tu nie wiadomo jeszcze">
+                    <MenuItem.Icon>
+                        <Image Source="/WpfNotebookProject;component/Resources/saveFile.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
-            <!--<MenuItem Header="Theme">
-                <MenuItem Header="Light" Template="{DynamicResource SingleDropDownMenuItem}" Click="ChangeTheme" Uid="0">
+            <MenuItem Header="Motyw">
+                <MenuItem Header="Jasny" Click="ChangeTheme" Uid="0">
                     <MenuItem.Icon>
-                        <Rectangle Stroke="#FF848484" Fill="#FFE8E8E8" StrokeThickness="2" StrokeLineJoin="Round" BitmapEffect="{StaticResource NormalShadow}"/>
+                        <Rectangle Stroke="#FF848484" Fill="#FFE8E8E8" StrokeThickness="2" StrokeLineJoin="Round" BitmapEffect="{StaticResource NormalShadow}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Colourful Light" Template="{DynamicResource SingleDropDownMenuItem}" Click="ChangeTheme" Uid="1">
+                <MenuItem Header="Jasny z kolorem" Click="ChangeTheme" Uid="1">
                     <MenuItem.Icon>
-                        <Rectangle Stroke="#FF2C7FF5" Fill="#FFE8E8E8" StrokeThickness="2" StrokeLineJoin="Round" BitmapEffect="{StaticResource NormalShadow}"/>
+                        <Rectangle Stroke="#FF2C7FF5" Fill="#FFE8E8E8" StrokeThickness="2" StrokeLineJoin="Round" BitmapEffect="{StaticResource NormalShadow}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Dark" Template="{DynamicResource SingleDropDownMenuItem}" Click="ChangeTheme" Uid="2">
+                <MenuItem Header="Ciemny" Click="ChangeTheme" Uid="2">
                     <MenuItem.Icon>
-                        <Rectangle Stroke="#FF404040" Fill="#FF1B1B1B" StrokeThickness="2" StrokeLineJoin="Round" BitmapEffect="{StaticResource NormalShadow}"/>
+                        <Rectangle Stroke="#FF404040" Fill="#FF1B1B1B" StrokeThickness="2" StrokeLineJoin="Round" BitmapEffect="{StaticResource NormalShadow}" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Colourful Dark" Template="{DynamicResource SingleDropDownMenuItem}" Click="ChangeTheme" Uid="3">
+                <MenuItem Header="Ciemny z kolorem" Click="ChangeTheme" Uid="3">
                     <MenuItem.Icon>
-                        <Rectangle Stroke="#FF2C7FF5" Fill="#FF1B1B1B" StrokeThickness="2" StrokeLineJoin="Round" BitmapEffect="{StaticResource NormalShadow}"/>
+                        <Rectangle Stroke="#FF2C7FF5" Fill="#FF1B1B1B" StrokeThickness="2" StrokeLineJoin="Round" BitmapEffect="{StaticResource NormalShadow}" />
                     </MenuItem.Icon>
                 </MenuItem>
-            </MenuItem>-->
+            </MenuItem>
+           
         </Menu>
         <Grid Grid.Row="0" Grid.Column="1" >
             <Grid.ColumnDefinitions>
@@ -93,8 +127,8 @@
             <Button Grid.Column="1" Content="Wyszukaj" Height="26" VerticalAlignment="Top" Command="{Binding TestCommand}"></Button>
         </Grid>
 
-        <Grid Grid.Row="1" Grid.ColumnSpan="2">
-            <DockPanel Margin="5,18,5,5" Background="{DynamicResource BackgroundColour}">
+       
+            <DockPanel Grid.Row="1" Grid.ColumnSpan="2"  Background="{DynamicResource BackgroundColour}">
                 <Button  ToolTip="Nowy notes" 
                                 BorderBrush="Transparent" Background="Transparent" VerticalAlignment="Center"
                                 Focusable="False" Width="28" Height="28" Margin="0 0 2 0">
@@ -180,7 +214,7 @@
                 </StackPanel>
 
             </DockPanel>
-        </Grid>
+        
 
 
 
@@ -188,35 +222,27 @@
 
 
 
-        <ToolBar Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Background="Azure">
-            <ToggleButton Command="EditingCommands.ToggleBold" Name="btnBold">
-                <Image Source="/Resources/boldTextIcon.png" Height="12" Width="12" Margin="6,0"/>
+        <ToolBar Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" FontStyle="Normal" >
+            <ToggleButton Command="EditingCommands.ToggleBold" Name="btnBold" >
+                <TextBlock Padding="4" FontSize="22" FontWeight="Bold" FontFamily="Consolas"  >B</TextBlock>
             </ToggleButton>
 
-            <ToggleButton Command="EditingCommands.ToggleItalic" Name="btnItalic">
-                <Image Source="/Resources/italicTextIcon.png" Height="12" Width="12" Margin="6,0"/>
+            <ToggleButton Command="EditingCommands.ToggleItalic" Name="btnItalic" FontFamily="Arial" >
+                <TextBlock Padding="4" FontSize="22"  FontFamily="Consolas" FontStyle="Italic" FontWeight="Normal"  >I</TextBlock>
             </ToggleButton>
 
             <ToggleButton Command="EditingCommands.ToggleUnderline" Name="btnUnderline">
-                <Image Source="/Resources/underlinedTextIcon.png" Height="12" Width="12" Margin="6,0"/>
+                <TextBlock Padding="4" FontSize="22" FontWeight="Normal" FontFamily="Consolas" TextDecorations="Underline"  >U</TextBlock>
             </ToggleButton>
-            <ComboBox Name="cmbFontFamily" SelectionChanged="cmbFontFamily_SelectionChanged" Padding="10,0" BorderBrush="Black" />
-            <!--<ComboBoxItem Content="Arial" IsSelected="True"/>
-                <ComboBoxItem Content="Times New Roman" />
-                <ComboBoxItem Content="Comic Sans" />-->
 
-            <ComboBox Name="cmbFontSize" Padding="8,0" BorderBrush="Black" IsEditable="True" TextBoxBase.TextChanged="cmbFontSize_TextChanged" />
+            <ComboBox Height="25" Foreground="{DynamicResource ControlDefaultForeground}" Background="{DynamicResource BackgroundColour}" Name="cmbFontFamily" SelectionChanged="cmbFontFamily_SelectionChanged"  Padding="20,0"  />
+            <ComboBox Height="25" Foreground="{DynamicResource ControlDefaultForeground}" Background="{DynamicResource BackgroundColour}"  Name="cmbFontSize" Padding="12,0"  IsEditable="True" TextBoxBase.TextChanged="cmbFontSize_TextChanged"/>
 
-
-            <Separator/>
-            <Button>
-                <Image Source="/add_image-512.webp" Height="12" Width="12" Margin="6,0"/>
-            </Button>
         </ToolBar>
 
         <TabControl x:Name="SectionsTabControl" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Template="{StaticResource TabControlTemplate}"
                     ItemsSource="{Binding OpenSections}" 
-                    SelectedItem="{Binding ActualSection}">
+                    SelectedItem="{Binding ActualSection}" FontFamily="Arial">
             <TabControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel >
@@ -292,7 +318,7 @@
                             <ColumnDefinition Width="200"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <ListBox x:Name="NotesListBox" Grid.Column="0" Background="AliceBlue"
+                        <ListBox x:Name="NotesListBox" Grid.Column="0" 
                                  ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.OpenNotes }"
                                  SelectedItem="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.OpenNote }">
                             <ListBox.ItemTemplate>
@@ -359,13 +385,10 @@
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
-                        <Button Grid.Row="1" Grid.Column="0" Content="Dodaj notatkę" Command="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, 
-                            Path=DataContext.AddNewNoteCommand }"
-                            CommandParameter="{Binding ElementName=SectionsTabControl, Path=SelectedItem}"/>
-                        <RichTextBox Name="tbEditor" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" SelectionChanged="tbEditor_SelectionChanged" 
-                                     AcceptsReturn="True" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible"
-                                     u:RichTextBoxHelper.DocumentXaml="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, 
-                                        Path=DataContext.NoteText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <Button Grid.Row="1" Grid.Column="0" Content="Dodaj notatkę" Command="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.AddNewNoteCommand }"
+                                CommandParameter="{Binding ElementName=SectionsTabControl, Path=SelectedItem}"/>
+                        <RichTextBox Foreground="{DynamicResource ControlDefaultForeground}" Background="{DynamicResource BackgroundColour}" Name="tbEditor" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" SelectionChanged="tbEditor_SelectionChanged"   AcceptsReturn="True" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible"
+                                     u:RichTextBoxHelper.DocumentXaml="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.NoteText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontFamily="Arial">
                         </RichTextBox>
                     </Grid>
                 </DataTemplate>
