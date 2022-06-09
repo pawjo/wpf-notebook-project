@@ -1,14 +1,17 @@
-﻿using Microsoft.Win32;
+﻿using System;
+using Microsoft.Win32;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using WpfNotebookProject.Models;
 using WpfNotebookProject.Themes;
 using WpfNotebookProject.ViewModels;
+using System.Text.RegularExpressions;
 
 namespace WpfNotebookProject
 {
@@ -40,16 +43,18 @@ namespace WpfNotebookProject
 			DataContext = _viewModel;
 			cmbFontFamily.ItemsSource = Fonts.SystemFontFamilies.OrderBy(f => f.Source);
 			cmbFontFamily.Text += Fonts.SystemFontFamilies.First().ToString();
+
+			/////////////////
 			cmbFontSize.ItemsSource = new List<double>() { 8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72 };
 			cmbFontSize.SelectedIndex = 4;
 		}
-		// zmiana
+		
 		private void OpenFileMenuItem_Click(object sender, RoutedEventArgs e)
 		{
 			var dialog = new OpenFileDialog();
 			dialog.ShowDialog();
 		}
-		// dark theme
+		
 
 		#region THEMES
 		private void ChangeTheme(object sender, RoutedEventArgs e)
@@ -72,8 +77,10 @@ namespace WpfNotebookProject
 
 			e.Handled = true;
 		}
+		#endregion
 
 
+		#region FONTS_Size_and_Family
 		private void cmbFontFamily_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			if (cmbFontFamily.SelectedItem != null && tbEditor != null)
@@ -83,8 +90,16 @@ namespace WpfNotebookProject
 
 		private void cmbFontSize_TextChanged(object sender, TextChangedEventArgs e)
 		{
-			if (!string.IsNullOrEmpty(cmbFontSize.Text) && tbEditor != null)
-				tbEditor.Selection.ApplyPropertyValue(Inline.FontSizeProperty, cmbFontSize.Text);
+			if (!string.IsNullOrEmpty(cmbFontSize.Text) && tbEditor != null && 
+				double.TryParse(cmbFontSize.Text, out double result))
+			{
+				int result2 = Convert.ToInt32(result);
+				
+				if (result2 > 0 && result2 < 1000)
+					tbEditor.Selection.ApplyPropertyValue(Inline.FontSizeProperty, result);
+				else
+					tbEditor.Selection.ApplyPropertyValue(Inline.FontSizeProperty, 100);
+			}
 		}
 
 		private void tbEditor_SelectionChanged(object sender, RoutedEventArgs e)
@@ -100,10 +115,11 @@ namespace WpfNotebookProject
 			cmbFontFamily.SelectedItem = temp;
 			temp = tbEditor.Selection.GetPropertyValue(Inline.FontSizeProperty);
 			cmbFontSize.Text = temp.ToString();
+			;
+			
 		}
-
-
 		#endregion
+
 
 
 

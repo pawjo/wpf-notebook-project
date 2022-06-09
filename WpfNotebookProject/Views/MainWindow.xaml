@@ -236,7 +236,14 @@
             </ToggleButton>
 
             <ComboBox Height="25" Foreground="{DynamicResource ControlDefaultForeground}" Background="{DynamicResource BackgroundColour}" Name="cmbFontFamily" SelectionChanged="cmbFontFamily_SelectionChanged"  Padding="20,0"  />
-            <ComboBox Height="25" Foreground="{DynamicResource ControlDefaultForeground}" Background="{DynamicResource BackgroundColour}"  Name="cmbFontSize" Padding="12,0"  IsEditable="True" TextBoxBase.TextChanged="cmbFontSize_TextChanged"/>
+            <ComboBox Height="25" 
+                      Foreground="{DynamicResource ControlDefaultForeground}" 
+                      Background="{DynamicResource BackgroundColour}"  
+                      Name="cmbFontSize" 
+                      Padding="12,0"  
+                      IsEditable="True" 
+                      ToolTip="Font Size"
+                      TextBoxBase.TextChanged="cmbFontSize_TextChanged"/>
 
         </ToolBar>
 
