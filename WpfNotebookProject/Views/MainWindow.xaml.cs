@@ -93,9 +93,7 @@ namespace WpfNotebookProject
 			if (!string.IsNullOrEmpty(cmbFontSize.Text) && tbEditor != null && 
 				double.TryParse(cmbFontSize.Text, out double result))
 			{
-				int result2 = Convert.ToInt32(result);
-				
-				if (result2 > 0 && result2 < 1000)
+				if (result > 0 && result < 1000)
 					tbEditor.Selection.ApplyPropertyValue(Inline.FontSizeProperty, result);
 				else
 					tbEditor.Selection.ApplyPropertyValue(Inline.FontSizeProperty, 100);
@@ -114,8 +112,13 @@ namespace WpfNotebookProject
 			temp = tbEditor.Selection.GetPropertyValue(Inline.FontFamilyProperty);
 			cmbFontFamily.SelectedItem = temp;
 			temp = tbEditor.Selection.GetPropertyValue(Inline.FontSizeProperty);
-			cmbFontSize.Text = temp.ToString();
-			;
+			var str = temp.ToString();
+			if (str == "{DependencyProperty.UnsetValue}")
+            {
+				str = "";
+            }
+
+			cmbFontSize.Text = str;
 			
 		}
 		#endregion
