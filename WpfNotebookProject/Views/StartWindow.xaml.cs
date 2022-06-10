@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
+using WpfNotebookProject.ViewModels;
 
 namespace WpfNotebookProject
 {
@@ -26,7 +15,18 @@ namespace WpfNotebookProject
 
         private void NewNotebookButton_Click(object sender, RoutedEventArgs e)
         {
-            var window = new MainWindow();
+            OpenMainWindow(true);
+        }
+
+        private void OpenNotebookButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenMainWindow(false);
+        }
+
+        private void OpenMainWindow(bool isNewFile)
+        {
+            var viewModel = new MainViewModel(isNewFile);
+            var window = new MainWindow(viewModel);
             this.Close();
             window.Show();
         }

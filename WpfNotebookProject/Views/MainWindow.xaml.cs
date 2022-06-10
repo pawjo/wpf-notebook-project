@@ -37,10 +37,10 @@ namespace WpfNotebookProject
             }
         }
 
-        public MainWindow()
+        public MainWindow(MainViewModel viewModel)
         {
             InitializeComponent();
-            _viewModel = new MainViewModel();
+            _viewModel = viewModel;
             DataContext = _viewModel;
             cmbFontFamily.ItemsSource = Fonts.SystemFontFamilies.OrderBy(f => f.Source);
             cmbFontFamily.Text += Fonts.SystemFontFamilies.First().ToString();

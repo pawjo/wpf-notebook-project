@@ -282,27 +282,11 @@ namespace WpfNotebookProject.ViewModels
             get => _openNotebookCommand ??
                 (_openNotebookCommand = new RelayCommand(x =>
                 {
-                    var dialog = new OpenFileDialog();
-                    dialog.Title = "Otwórz notes";
-                    dialog.Filter = "Pliki XML (*.xml)|*.xml|Wszystkie pliki (*.*)|*.*";
-                    if (dialog.ShowDialog() == false)
-                    {
-                        return;
-                    }
-                    var path = dialog.FileName;
-
-                    var notebook = XMLUtility.ReadNotebookFromFile(path);
-                    if (notebook == null)
-                    {
-                        MessageBox.Show("Błąd odczytu");
-                    }
-
-                    IsSaved = true;
-                    FilePath = path;
-                    Notebook = notebook;
-                    InitNotebook();
+                    OpenNotebook();
                 }));
         }
+
+        
 
         private RelayCommand _newNotebookCommand;
 
@@ -344,31 +328,39 @@ namespace WpfNotebookProject.ViewModels
                 }));
         }
 
-        public MainViewModel() : base()
+        public MainViewModel(bool isNewFile) : base()
         {
-            OpenEmptyNotebook();
-            //Notebook.Sections = new List<Section>
-            //{
-            //    new Section
-            //    {
-            //        Title = "Sekcja 1",
-            //        Notes = new List<Note>
-            //        {
-            //            new Note{Title="Testowa notatka 1", Text= "Tekst testowej notatki 1"},
-            //            new Note{Title="Test2", Text="Tekst 2"}
-            //        }
-            //    },
-            //    new Section
-            //    {
-            //        Title="Sekcja 2",
-            //        Notes = new List<Note>
-            //        {
-            //            new Note{Title="Testowa notatka w sekcji 2", Text="aaaaaaa"},
-            //            new Note{Title="Test2", Text="Tekst 2"}
-            //        }
-            //    }
-            //};
-            //ChangeSection(Notebook.Sections[0]);
+            if (isNewFile)
+            {
+                OpenEmptyNotebook();
+            }
+            else
+            {
+                OpenNotebook();
+            }
+        }
+
+        public void OpenNotebook()
+        {
+            var dialog = new OpenFileDialog();
+            dialog.Title = "Otwórz notes";
+            dialog.Filter = "Pliki XML (*.xml)|*.xml|Wszystkie pliki (*.*)|*.*";
+            if (dialog.ShowDialog() == false)
+            {
+                return;
+            }
+            var path = dialog.FileName;
+
+            var notebook = XMLUtility.ReadNotebookFromFile(path);
+            if (notebook == null)
+            {
+                MessageBox.Show("Błąd odczytu");
+            }
+
+            IsSaved = true;
+            FilePath = path;
+            Notebook = notebook;
+            InitNotebook();
         }
 
         private void OpenEmptyNotebook()
