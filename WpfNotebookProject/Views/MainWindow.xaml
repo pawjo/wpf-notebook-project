@@ -202,11 +202,11 @@
                                 Focusable="False" Width="28" Margin="0 0 2 0">
                     <Image Margin="1" Source="/Resources/closeFile.png"/>
                 </Button>
-                <Button IsEnabled="True" 
+                <!--<Button IsEnabled="True" 
                                 BorderBrush="Transparent" Background="Transparent"
                                 ToolTip="Drukuj tekst" Width="32" Margin="0">
                     <Image Margin="1" Source="/Resources/printIcon.png"/>
-                </Button>
+                </Button>-->
                 </StackPanel>
 
             </DockPanel>

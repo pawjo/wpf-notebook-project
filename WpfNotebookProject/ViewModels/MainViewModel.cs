@@ -190,8 +190,13 @@ namespace WpfNotebookProject.ViewModels
                 (_deleteNoteCommand = new RelayCommand(x =>
                 {
                     var note = x as Note;
-                    if (note != null)
+                    if (note != null && OpenNotes.Count > 1)
                     {
+                        var messageBoxResult = MessageBox.Show("Czy na pewno chcesz usunąć notatkę?", "Usuwanie notatki", MessageBoxButton.YesNo);
+                        if (messageBoxResult == MessageBoxResult.No)
+                        {
+                            return;
+                        }
                         ActualSection.Notes.Remove(note);
                         OpenNotes = GetNotesFromActualSection();
                         OpenNote = OpenNotes.First();
@@ -230,6 +235,12 @@ namespace WpfNotebookProject.ViewModels
                 {
                     if (OpenSections.Count > 1)
                     {
+                        var messageBoxResult = MessageBox.Show("Czy na pewno chcesz usunąć sekcje?", "Usuwanie sekcji", MessageBoxButton.YesNo);
+                        if (messageBoxResult == MessageBoxResult.No)
+                        {
+                            return;
+                        }
+
                         Notebook.Sections.Remove(ActualSection);
                         ActualSection = OpenSections.First(x => x != ActualSection);
                         OpenSections = GetSections();
