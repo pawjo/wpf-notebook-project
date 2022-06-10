@@ -30,7 +30,7 @@
                 <Label Grid.Row="1" Content="Utwórz nowy notes"/>
             </Grid>
         </Button>
-        <Button Grid.Row="2" Grid.Column="1">
+        <Button Grid.Row="2" Grid.Column="1" Click="OpenNotebookButton_Click">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition/>

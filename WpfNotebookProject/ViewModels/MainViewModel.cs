@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Win32;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
 using WpfNotebookProject.Models;
+using WpfNotebookProject.Utils;
 
 namespace WpfNotebookProject.ViewModels
 {
@@ -119,6 +121,10 @@ namespace WpfNotebookProject.ViewModels
             get => _isEditSectionTitleMode ? Visibility.Visible : Visibility.Collapsed;
         }
 
+        public bool IsSaved { get; set; }
+
+        public string FilePath { get; set; }
+
         private RelayCommand _newTabCommand;
 
         public RelayCommand NewTabCommand
@@ -141,7 +147,7 @@ namespace WpfNotebookProject.ViewModels
             }
         }
 
-        
+
         private RelayCommand _enableEditNoteTitleCommand;
 
         public RelayCommand EnableEditNoteTitleCommand
@@ -184,8 +190,13 @@ namespace WpfNotebookProject.ViewModels
                 (_deleteNoteCommand = new RelayCommand(x =>
                 {
                     var note = x as Note;
-                    if (note != null)
+                    if (note != null && OpenNotes.Count > 1)
                     {
+                        var messageBoxResult = MessageBox.Show("Czy na pewno chcesz usunąć notatkę?", "Usuwanie notatki", MessageBoxButton.YesNo);
+                        if (messageBoxResult == MessageBoxResult.No)
+                        {
+                            return;
+                        }
                         ActualSection.Notes.Remove(note);
                         OpenNotes = GetNotesFromActualSection();
                         OpenNote = OpenNotes.First();
@@ -224,6 +235,12 @@ namespace WpfNotebookProject.ViewModels
                 {
                     if (OpenSections.Count > 1)
                     {
+                        var messageBoxResult = MessageBox.Show("Czy na pewno chcesz usunąć sekcje?", "Usuwanie sekcji", MessageBoxButton.YesNo);
+                        if (messageBoxResult == MessageBoxResult.No)
+                        {
+                            return;
+                        }
+
                         Notebook.Sections.Remove(ActualSection);
                         ActualSection = OpenSections.First(x => x != ActualSection);
                         OpenSections = GetSections();
@@ -233,34 +250,145 @@ namespace WpfNotebookProject.ViewModels
                 }));
         }
 
-        public MainViewModel() : base()
+        private RelayCommand _saveNotebookCommand;
+
+        public RelayCommand SaveNotebookCommand
+        {
+            get => _saveNotebookCommand ??
+                (_saveNotebookCommand = new RelayCommand(x =>
+                {
+                    if (!IsSaved && !GetFileNameForSave())
+                    {
+                        return;
+                    }
+
+                    SaveFile();
+                }));
+        }
+
+
+
+        private RelayCommand _saveNotebookAsCommand;
+
+        public RelayCommand SaveNotebookAsCommand
+        {
+            get => _saveNotebookAsCommand ??
+                (_saveNotebookAsCommand = new RelayCommand(x =>
+                {
+                    if (!GetFileNameForSave())
+                    {
+                        return;
+                    }
+
+                    SaveFile();
+                }));
+        }
+
+        
+
+        private RelayCommand _openNotebookCommand;
+
+        public RelayCommand OpenNotebookCommand
+        {
+            get => _openNotebookCommand ??
+                (_openNotebookCommand = new RelayCommand(x =>
+                {
+                    OpenNotebook();
+                }));
+        }
+
+        
+
+        private RelayCommand _newNotebookCommand;
+
+        public RelayCommand NewNotebookCommand
+        {
+            get => _newNotebookCommand ??
+                (_newNotebookCommand = new RelayCommand(x =>
+                {
+                    OpenEmptyNotebook();
+                }));
+        }
+
+        private RelayCommand _closeNotebookCommand;
+
+        public RelayCommand CloseNotebookCommand
+        {
+            get => _closeNotebookCommand ??
+                (_closeNotebookCommand = new RelayCommand(x =>
+                {
+                    if (!IsSaved)
+                    {
+                        var result = MessageBox.Show("Czy chcesz zapisać zmiany?", "Zamykanie notesu", MessageBoxButton.YesNoCancel);
+                        if(result==MessageBoxResult.Cancel)
+                        {
+                            return;
+                        }
+                        else if(result == MessageBoxResult.Yes && string.IsNullOrWhiteSpace(FilePath) && GetFileNameForSave())
+                        {
+                            SaveFile();
+                        }
+                        else if (result == MessageBoxResult.Yes)
+                        {
+                            SaveFile();
+                        }
+
+                    }
+
+                    OpenEmptyNotebook();
+                }));
+        }
+
+        public MainViewModel(bool isNewFile) : base()
+        {
+            if (isNewFile)
+            {
+                OpenEmptyNotebook();
+            }
+            else
+            {
+                OpenNotebook();
+            }
+        }
+
+        public void OpenNotebook()
+        {
+            var dialog = new OpenFileDialog();
+            dialog.Title = "Otwórz notes";
+            dialog.Filter = "Pliki XML (*.xml)|*.xml|Wszystkie pliki (*.*)|*.*";
+            if (dialog.ShowDialog() == false)
+            {
+                return;
+            }
+            var path = dialog.FileName;
+
+            var notebook = XMLUtility.ReadNotebookFromFile(path);
+            if (notebook == null)
+            {
+                MessageBox.Show("Błąd odczytu");
+            }
+
+            IsSaved = true;
+            FilePath = path;
+            Notebook = notebook;
+            InitNotebook();
+        }
+
+        private void OpenEmptyNotebook()
         {
             Notebook = new Notebook();
             Notebook.Sections = new List<Section>();
             AddNewTab();
-            //Notebook.Sections = new List<Section>
-            //{
-            //    new Section
-            //    {
-            //        Title = "Sekcja 1",
-            //        Notes = new List<Note>
-            //        {
-            //            new Note{Title="Testowa notatka 1", Text= "Tekst testowej notatki 1"},
-            //            new Note{Title="Test2", Text="Tekst 2"}
-            //        }
-            //    },
-            //    new Section
-            //    {
-            //        Title="Sekcja 2",
-            //        Notes = new List<Note>
-            //        {
-            //            new Note{Title="Testowa notatka w sekcji 2", Text="aaaaaaa"},
-            //            new Note{Title="Test2", Text="Tekst 2"}
-            //        }
-            //    }
-            //};
-            //ChangeSection(Notebook.Sections[0]);
         }
+
+        public void InitNotebook()
+        {
+            OpenSections = GetSections();
+            ActualSection = OpenSections.First();
+            OpenNotes = GetNotesFromActualSection();
+            OpenNote = OpenNotes.First();
+        }
+
 
         private void AddNewTab()
         {
@@ -304,5 +432,27 @@ namespace WpfNotebookProject.ViewModels
 
         private ObservableCollection<Note> GetNotesFromActualSection() =>
             new ObservableCollection<Note>(ActualSection.Notes);
+
+        private void SaveFile()
+        {
+            if (!XMLUtility.WriteNotebookToFile(Notebook, FilePath))
+            {
+                MessageBox.Show("Błąd zapisu");
+            }
+            IsSaved = true;
+        }
+
+        private bool GetFileNameForSave()
+        {
+            var dialog = new SaveFileDialog();
+            dialog.DefaultExt = "xml";
+            dialog.Title = "Zapisz notes";
+            if (dialog.ShowDialog() == false)
+            {
+                return false;
+            }
+            FilePath = dialog.FileName;
+            return true;
+        }
     }
 }

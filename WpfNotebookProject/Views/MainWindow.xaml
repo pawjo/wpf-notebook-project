@@ -64,35 +64,35 @@
         </Grid.ColumnDefinitions>
         <Menu Grid.Row="0" Grid.Column="0" Padding="4" Background="{DynamicResource BackgroundColour}">
             <MenuItem Header="Plik">
-                <MenuItem Header="Nowy notes">
+                <MenuItem Header="Nowy notes" Command="{Binding NewNotebookCommand, Mode=OneTime}">
                     <MenuItem.Icon>
                         <Image Source="/WpfNotebookProject;component/Resources/newFile.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                
-                <MenuItem Header="Otwórz notes" Click="OpenFileMenuItem_Click">
+
+                <MenuItem Header="Otwórz notes" Command="{Binding OpenNotebookCommand, Mode=OneTime}">
                     <MenuItem.Icon>
                         <Image Source="/WpfNotebookProject;component/Resources/openFile.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                
-                <MenuItem Header="Zapisz notes">
+
+                <MenuItem Header="Zapisz notes" Command="{Binding SaveNotebookCommand, Mode=OneTime}">
                     <MenuItem.Icon>
                         <Image Source="/WpfNotebookProject;component/Resources/saveFile.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                
-                <MenuItem Header="Zapisz notes jako">
+
+                <MenuItem Header="Zapisz notes jako" Command="{Binding SaveNotebookAsCommand, Mode=OneTime}">
                     <MenuItem.Icon>
                         <Image Source="/WpfNotebookProject;component/Resources/saveFileAs.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 
-                <MenuItem Header="Opcje - tu nie wiadomo jeszcze">
+                <!--<MenuItem Header="Opcje - tu nie wiadomo jeszcze">
                     <MenuItem.Icon>
                         <Image Source="/WpfNotebookProject;component/Resources/saveFile.png"/>
                     </MenuItem.Icon>
-                </MenuItem>
+                </MenuItem>-->
             </MenuItem>
             <MenuItem Header="Motyw">
                 <MenuItem Header="Jasny" Click="ChangeTheme" Uid="0">
@@ -123,15 +123,16 @@
                 <ColumnDefinition/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <TextBox Grid.Column="0" Padding="4" Text="Wyszukaj..."></TextBox>
-            <Button Grid.Column="1" Content="Wyszukaj" Height="26" VerticalAlignment="Top"></Button>
+            <!--<TextBox Grid.Column="0" Padding="4" Text="Wyszukaj..."></TextBox>
+            <Button Grid.Column="1" Content="Wyszukaj" Height="26" VerticalAlignment="Top"></Button>-->
         </Grid>
 
        
             <DockPanel Grid.Row="1" Grid.ColumnSpan="2"  Background="{DynamicResource BackgroundColour}">
                 <Button  ToolTip="Nowy notes" 
                                 BorderBrush="Transparent" Background="Transparent" VerticalAlignment="Center"
-                                Focusable="False" Width="28" Height="28" Margin="0 0 2 0">
+                                Focusable="False" Width="28" Height="28" Margin="0 0 2 0"
+                         Command="{Binding NewNotebookCommand, Mode=OneTime}">
                     <Button.Triggers>
                         <EventTrigger RoutedEvent="MouseEnter">
                             <BeginStoryboard>
@@ -153,18 +154,24 @@
                     <Image Margin="1" Source="/Resources/newFile.png"/>
                 </Button>
 
-                <Button Command="{Binding OpenCommand, Mode=OneTime}" ToolTip="Otwórz notes"
+                <Button ToolTip="Otwórz notes"
                                 BorderBrush="Transparent" Background="Transparent" 
-                                Focusable="False" Width="28" Margin="0 0 2 0">
+                                Focusable="False" Width="28" Margin="0 0 2 0"
+                        Command="{Binding OpenNotebookCommand, Mode=OneTime}">
                     <Image Margin="1" Source="/Resources/openFile.png"/>
                 </Button>
 
                 <StackPanel IsEnabled="{Binding NotepadAvaliable, UpdateSourceTrigger=PropertyChanged}" Orientation="Horizontal">
-                    <Button Command="{Binding SaveCommand, Mode=OneTime}" ToolTip="Zapisz notes" 
+                    <!--<Button Command="{Binding SaveCommand, Mode=OneTime}" ToolTip="Zapisz notes" 
+                                    BorderBrush="Transparent"  VerticalAlignment="Center"
+                                    Background="Transparent" Focusable="False"
+                                    Width="28" Height="28" Margin="0 0 2 0">-->
+                <Button Command="{Binding SaveNotebookCommand, Mode=OneTime}"
+                                    ToolTip="Zapisz notes" 
                                     BorderBrush="Transparent"  VerticalAlignment="Center"
                                     Background="Transparent" Focusable="False"
                                     Width="28" Height="28" Margin="0 0 2 0">
-                        <Button.Triggers>
+                    <Button.Triggers>
                             <EventTrigger RoutedEvent="MouseEnter">
                                 <BeginStoryboard>
                                     <Storyboard>
@@ -182,35 +189,24 @@
                                 </BeginStoryboard>
                             </EventTrigger>
                         </Button.Triggers>
-                        <Image Margin="1" Source="/Resources/saveFile.png"/>
-                    </Button>
+                    <Image Margin="1" Source="/Resources/saveFile.png"/>
+                </Button>
 
-                    <Button Command="{Binding SaveAsCommand, Mode=OneTime}" ToolTip="Zapisz notes jako..." 
+                <Button Command="{Binding SaveNotebookAsCommand, Mode=OneTime}" ToolTip="Zapisz notes jako..." 
                                     BorderBrush="Transparent" Background="Transparent" Width="28"
                                     Focusable="False" Margin="0 0 2 0">
                         <Image Margin="1" Source="/Resources/saveFileAs.png"/>
                     </Button>
-
-                    <Button Command="{Binding SaveAllCommand, Mode=OneTime}" ToolTip="Zapisz każdy obecnie otwarty"
-                                    BorderBrush="Transparent" Background="Transparent" 
-                                    Focusable="False" Width="28" Margin="0 0 2 0">
-                        <Image Margin="1" Source="/Resources/saveAll.png"/>
-                    </Button>
-                    <Button Command="{Binding CloseSelectedNotepadCommand, Mode=OneTime}" ToolTip="Zamknij obecny notes i usuń go" 
-                                    BorderBrush="Transparent" Background="Transparent" 
-                                    Focusable="False" Width="28" Margin="0 0 2 0">
-                        <Image Margin="1" Source="/Resources/closeFile.png"/>
-                    </Button>
-                    <Button Command="{Binding CloseAllNotepadsCommand, Mode=OneTime}" ToolTip="Zamknij wszystkie otwarte notesy i usuń je" 
-                                    BorderBrush="Transparent" Background="Transparent" 
-                                    Focusable="False" Width="28" Margin="0 0 2 0">
-                        <Image Margin="1" Source="/Resources/closeAllFiles.png"/>
-                    </Button>
-                    <Button Command="{Binding PrintFileCommand, Mode=OneTime}" IsEnabled="True" 
-                                    BorderBrush="Transparent" Background="Transparent"
-                                    ToolTip="Drukuj tekst" Width="32" Margin="0">
-                        <Image Margin="1" Source="/Resources/printIcon.png"/>
-                    </Button>
+                <Button Command="{Binding CloseNotebookCommand, Mode=OneTime}" ToolTip="Zamknij obecny notes" 
+                                BorderBrush="Transparent" Background="Transparent" 
+                                Focusable="False" Width="28" Margin="0 0 2 0">
+                    <Image Margin="1" Source="/Resources/closeFile.png"/>
+                </Button>
+                <!--<Button IsEnabled="True" 
+                                BorderBrush="Transparent" Background="Transparent"
+                                ToolTip="Drukuj tekst" Width="32" Margin="0">
+                    <Image Margin="1" Source="/Resources/printIcon.png"/>
+                </Button>-->
                 </StackPanel>
 
             </DockPanel>
@@ -249,7 +245,7 @@
 
         <TabControl x:Name="SectionsTabControl" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Template="{StaticResource TabControlTemplate}"
                     ItemsSource="{Binding OpenSections}" 
-                    SelectedItem="{Binding ActualSection}" FontFamily="Arial">
+                    SelectedItem="{Binding ActualSection}" FontFamily="Arial" IsSynchronizedWithCurrentItem="True">
             <TabControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel >
