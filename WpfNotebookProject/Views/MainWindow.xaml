@@ -189,24 +189,24 @@
                                 </BeginStoryboard>
                             </EventTrigger>
                         </Button.Triggers>
-                        <Image Margin="1" Source="/Resources/saveFile.png"/>
-                    </Button>
+                    <Image Margin="1" Source="/Resources/saveFile.png"/>
+                </Button>
 
                 <Button Command="{Binding SaveNotebookAsCommand, Mode=OneTime}" ToolTip="Zapisz notes jako..." 
                                     BorderBrush="Transparent" Background="Transparent" Width="28"
                                     Focusable="False" Margin="0 0 2 0">
                         <Image Margin="1" Source="/Resources/saveFileAs.png"/>
                     </Button>
-                    <Button Command="{Binding CloseSelectedNotepadCommand, Mode=OneTime}" ToolTip="Zamknij obecny notes i usuń go" 
-                                    BorderBrush="Transparent" Background="Transparent" 
-                                    Focusable="False" Width="28" Margin="0 0 2 0">
-                        <Image Margin="1" Source="/Resources/closeFile.png"/>
-                    </Button>
-                    <Button Command="{Binding PrintFileCommand, Mode=OneTime}" IsEnabled="True" 
-                                    BorderBrush="Transparent" Background="Transparent"
-                                    ToolTip="Drukuj tekst" Width="32" Margin="0">
-                        <Image Margin="1" Source="/Resources/printIcon.png"/>
-                    </Button>
+                <Button Command="{Binding CloseNotebookCommand, Mode=OneTime}" ToolTip="Zamknij obecny notes" 
+                                BorderBrush="Transparent" Background="Transparent" 
+                                Focusable="False" Width="28" Margin="0 0 2 0">
+                    <Image Margin="1" Source="/Resources/closeFile.png"/>
+                </Button>
+                <Button IsEnabled="True" 
+                                BorderBrush="Transparent" Background="Transparent"
+                                ToolTip="Drukuj tekst" Width="32" Margin="0">
+                    <Image Margin="1" Source="/Resources/printIcon.png"/>
+                </Button>
                 </StackPanel>
 
             </DockPanel>

@@ -310,17 +310,42 @@ namespace WpfNotebookProject.ViewModels
             get => _newNotebookCommand ??
                 (_newNotebookCommand = new RelayCommand(x =>
                 {
-                    Notebook = new Notebook();
-                    Notebook.Sections = new List<Section>();
-                    AddNewTab();
+                    OpenEmptyNotebook();
+                }));
+        }
+
+        private RelayCommand _closeNotebookCommand;
+
+        public RelayCommand CloseNotebookCommand
+        {
+            get => _closeNotebookCommand ??
+                (_closeNotebookCommand = new RelayCommand(x =>
+                {
+                    if (!IsSaved)
+                    {
+                        var result = MessageBox.Show("Czy chcesz zapisać zmiany?", "Zamykanie notesu", MessageBoxButton.YesNoCancel);
+                        if(result==MessageBoxResult.Cancel)
+                        {
+                            return;
+                        }
+                        else if(result == MessageBoxResult.Yes && string.IsNullOrWhiteSpace(FilePath) && GetFileNameForSave())
+                        {
+                            SaveFile();
+                        }
+                        else if (result == MessageBoxResult.Yes)
+                        {
+                            SaveFile();
+                        }
+
+                    }
+
+                    OpenEmptyNotebook();
                 }));
         }
 
         public MainViewModel() : base()
         {
-            Notebook = new Notebook();
-            Notebook.Sections = new List<Section>();
-            AddNewTab();
+            OpenEmptyNotebook();
             //Notebook.Sections = new List<Section>
             //{
             //    new Section
@@ -343,6 +368,13 @@ namespace WpfNotebookProject.ViewModels
             //    }
             //};
             //ChangeSection(Notebook.Sections[0]);
+        }
+
+        private void OpenEmptyNotebook()
+        {
+            Notebook = new Notebook();
+            Notebook.Sections = new List<Section>();
+            AddNewTab();
         }
 
         public void InitNotebook()
