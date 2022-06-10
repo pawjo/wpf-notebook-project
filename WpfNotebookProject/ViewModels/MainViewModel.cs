@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Win32;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
 using WpfNotebookProject.Models;
+using WpfNotebookProject.Utils;
 
 namespace WpfNotebookProject.ViewModels
 {
@@ -119,6 +121,10 @@ namespace WpfNotebookProject.ViewModels
             get => _isEditSectionTitleMode ? Visibility.Visible : Visibility.Collapsed;
         }
 
+        public bool IsSaved { get; set; }
+
+        public string FilePath { get; set; }
+
         private RelayCommand _newTabCommand;
 
         public RelayCommand NewTabCommand
@@ -141,7 +147,7 @@ namespace WpfNotebookProject.ViewModels
             }
         }
 
-        
+
         private RelayCommand _enableEditNoteTitleCommand;
 
         public RelayCommand EnableEditNoteTitleCommand
@@ -233,6 +239,83 @@ namespace WpfNotebookProject.ViewModels
                 }));
         }
 
+        private RelayCommand _saveNotebookCommand;
+
+        public RelayCommand SaveNotebookCommand
+        {
+            get => _saveNotebookCommand ??
+                (_saveNotebookCommand = new RelayCommand(x =>
+                {
+                    if (!IsSaved && !GetFileNameForSave())
+                    {
+                        return;
+                    }
+
+                    SaveFile();
+                }));
+        }
+
+
+
+        private RelayCommand _saveNotebookAsCommand;
+
+        public RelayCommand SaveNotebookAsCommand
+        {
+            get => _saveNotebookAsCommand ??
+                (_saveNotebookAsCommand = new RelayCommand(x =>
+                {
+                    if (!GetFileNameForSave())
+                    {
+                        return;
+                    }
+
+                    SaveFile();
+                }));
+        }
+
+        
+
+        private RelayCommand _openNotebookCommand;
+
+        public RelayCommand OpenNotebookCommand
+        {
+            get => _openNotebookCommand ??
+                (_openNotebookCommand = new RelayCommand(x =>
+                {
+                    var dialog = new OpenFileDialog();
+                    dialog.DefaultExt = "xml";
+                    if (dialog.ShowDialog() == false)
+                    {
+                        return;
+                    }
+                    var path = dialog.FileName;
+
+                    var notebook = XMLUtility.ReadNotebookFromFile(path);
+                    if (notebook == null)
+                    {
+                        MessageBox.Show("Błąd odczytu");
+                    }
+
+                    IsSaved = true;
+                    FilePath = path;
+                    Notebook = notebook;
+                    InitNotebook();
+                }));
+        }
+
+        private RelayCommand _newNotebookCommand;
+
+        public RelayCommand NewNotebookCommand
+        {
+            get => _newNotebookCommand ??
+                (_newNotebookCommand = new RelayCommand(x =>
+                {
+                    Notebook = new Notebook();
+                    Notebook.Sections = new List<Section>();
+                    AddNewTab();
+                }));
+        }
+
         public MainViewModel() : base()
         {
             Notebook = new Notebook();
@@ -261,6 +344,15 @@ namespace WpfNotebookProject.ViewModels
             //};
             //ChangeSection(Notebook.Sections[0]);
         }
+
+        public void InitNotebook()
+        {
+            OpenSections = GetSections();
+            ActualSection = OpenSections.First();
+            OpenNotes = GetNotesFromActualSection();
+            OpenNote = OpenNotes.First();
+        }
+
 
         private void AddNewTab()
         {
@@ -304,5 +396,26 @@ namespace WpfNotebookProject.ViewModels
 
         private ObservableCollection<Note> GetNotesFromActualSection() =>
             new ObservableCollection<Note>(ActualSection.Notes);
+
+        private void SaveFile()
+        {
+            if (!XMLUtility.WriteNotebookToFile(Notebook, FilePath))
+            {
+                MessageBox.Show("Błąd zapisu");
+            }
+            IsSaved = true;
+        }
+
+        private bool GetFileNameForSave()
+        {
+            var dialog = new SaveFileDialog();
+            dialog.DefaultExt = "xml";
+            if (dialog.ShowDialog() == false)
+            {
+                return false;
+            }
+            FilePath = dialog.FileName;
+            return true;
+        }
     }
 }
