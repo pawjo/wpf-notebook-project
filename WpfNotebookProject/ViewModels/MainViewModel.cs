@@ -283,7 +283,8 @@ namespace WpfNotebookProject.ViewModels
                 (_openNotebookCommand = new RelayCommand(x =>
                 {
                     var dialog = new OpenFileDialog();
-                    dialog.DefaultExt = "xml";
+                    dialog.Title = "Otwórz notes";
+                    dialog.Filter = "Pliki XML (*.xml)|*.xml|Wszystkie pliki (*.*)|*.*";
                     if (dialog.ShowDialog() == false)
                     {
                         return;
@@ -442,6 +443,7 @@ namespace WpfNotebookProject.ViewModels
         {
             var dialog = new SaveFileDialog();
             dialog.DefaultExt = "xml";
+            dialog.Title = "Zapisz notes";
             if (dialog.ShowDialog() == false)
             {
                 return false;

@@ -64,35 +64,35 @@
         </Grid.ColumnDefinitions>
         <Menu Grid.Row="0" Grid.Column="0" Padding="4" Background="{DynamicResource BackgroundColour}">
             <MenuItem Header="Plik">
-                <MenuItem Header="Nowy notes">
+                <MenuItem Header="Nowy notes" Command="{Binding NewNotebookCommand, Mode=OneTime}">
                     <MenuItem.Icon>
                         <Image Source="/WpfNotebookProject;component/Resources/newFile.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                
-                <MenuItem Header="Otwórz notes" Click="OpenFileMenuItem_Click">
+
+                <MenuItem Header="Otwórz notes" Command="{Binding OpenNotebookCommand, Mode=OneTime}">
                     <MenuItem.Icon>
                         <Image Source="/WpfNotebookProject;component/Resources/openFile.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                
-                <MenuItem Header="Zapisz notes">
+
+                <MenuItem Header="Zapisz notes" Command="{Binding SaveNotebookCommand, Mode=OneTime}">
                     <MenuItem.Icon>
                         <Image Source="/WpfNotebookProject;component/Resources/saveFile.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                
-                <MenuItem Header="Zapisz notes jako">
+
+                <MenuItem Header="Zapisz notes jako" Command="{Binding SaveNotebookAsCommand, Mode=OneTime}">
                     <MenuItem.Icon>
                         <Image Source="/WpfNotebookProject;component/Resources/saveFileAs.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 
-                <MenuItem Header="Opcje - tu nie wiadomo jeszcze">
+                <!--<MenuItem Header="Opcje - tu nie wiadomo jeszcze">
                     <MenuItem.Icon>
                         <Image Source="/WpfNotebookProject;component/Resources/saveFile.png"/>
                     </MenuItem.Icon>
-                </MenuItem>
+                </MenuItem>-->
             </MenuItem>
             <MenuItem Header="Motyw">
                 <MenuItem Header="Jasny" Click="ChangeTheme" Uid="0">
@@ -123,8 +123,8 @@
                 <ColumnDefinition/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <TextBox Grid.Column="0" Padding="4" Text="Wyszukaj..."></TextBox>
-            <Button Grid.Column="1" Content="Wyszukaj" Height="26" VerticalAlignment="Top"></Button>
+            <!--<TextBox Grid.Column="0" Padding="4" Text="Wyszukaj..."></TextBox>
+            <Button Grid.Column="1" Content="Wyszukaj" Height="26" VerticalAlignment="Top"></Button>-->
         </Grid>
 
        
